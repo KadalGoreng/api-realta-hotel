@@ -6,6 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
+    "db": "typeorm-model-generator -h localhost -s booking,hotel,hr,master,payment,purchasing,resto,users -d realta-hotel -p 5432 -u postgres -x root -e postgres",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
@@ -34,7 +35,6 @@
     "pg": "^8.10.0",
     "typeorm": "^0.3.12",
     "typeorm-model-generator": "^0.4.6"
-    
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",
