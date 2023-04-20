@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Address } from 'output/entities/Address';
 import { Hotels } from 'output/entities/Hotels';
 import { Repository } from 'typeorm';
 
@@ -29,17 +30,15 @@ export class HotelsService {
   }
 
   public async Create(
-    hotelId,
     hotelName: string,
     hotelDescription: string,
     hotelRatingStar: number,
     hotelPhonenumber: string,
     hotelModifiedDate: Date = new Date(),
-    hotelAdddr,
+    hotelAdddr: Address,
   ) {
     try {
       const hotels = await this.hotelsRepo.save({
-        hotelId: hotelId,
         hotelName: hotelName,
         hotelDescription: hotelDescription,
         hotelRatingStar: hotelRatingStar,
@@ -60,7 +59,7 @@ export class HotelsService {
     hotelRatingStar: number,
     hotelPhonenumber: string,
     hotelModifiedDate: Date = new Date(),
-    hotelAddr,
+    hotelAddr: Address,
   ) {
     try {
       const hotels = await this.hotelsRepo.update(id, {
@@ -77,7 +76,7 @@ export class HotelsService {
     }
   }
 
-  public async Delete(id: string) {
+  public async Delete(id: number) {
     try {
       const hotels = await this.hotelsRepo.delete(id);
       return hotels;

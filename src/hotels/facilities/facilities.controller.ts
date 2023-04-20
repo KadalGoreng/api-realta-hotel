@@ -19,8 +19,8 @@ export class FacilitiesController {
   }
 
   @Get('/:id')
-  public async getOne(@Param('id') id: number) {
-    return await this.ServicesFacilities.findOne(id);
+  public async getOne(@Param('faciId') faciId: number) {
+    return await this.ServicesFacilities.findOne(faciId);
   }
 
   @Post()

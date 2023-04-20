@@ -8,6 +8,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { HotelsService } from './hotels.service';
+import { Address } from 'output/entities/Address';
 
 @Controller('/hotels')
 export class HotelsController {
@@ -25,24 +26,23 @@ export class HotelsController {
 
   @Post()
   public async Create(
-    @Body('hotelId') hotelId,
     @Body('hotelName') hotelName: string,
     @Body('hotelDescription') hotelDescription: string,
     @Body('hotelRatingStar') hotelRatingStar: number,
     @Body('hotelPhonenumber') hotelPhonenumber: string,
     @Body('hotelModifiedDate') hotelModifiedDate: Date = new Date(),
-    @Body('addrId') hotelAdddr,
+    @Body('hotelAddr') hotelAddr: Address,
   ) {
     return await this.ServicesHotels.Create(
-      hotelId,
       hotelName,
       hotelDescription,
       hotelRatingStar,
       hotelPhonenumber,
       hotelModifiedDate,
-      hotelAdddr,
+      hotelAddr,
     );
   }
+
   @Put('/:id')
   public async Update(
     @Param('id') id: number,
@@ -51,7 +51,7 @@ export class HotelsController {
     @Body('hotelRatingStar') hotelRatingStar: number,
     @Body('hotelPhonenumber') hotelPhonenumber: string,
     @Body('hotelModifiedDate') hotelModifiedDate: Date = new Date(),
-    @Body('addrId') hotelAdddr,
+    @Body('hotelAdddr') hotelAdddr: Address,
   ) {
     return await this.ServicesHotels.Update(
       id,
@@ -63,8 +63,9 @@ export class HotelsController {
       hotelAdddr,
     );
   }
+
   @Delete('/:id')
-  public async Delete(@Param('id') id: string) {
+  public async Delete(@Param('id') id: number) {
     return await this.ServicesHotels.Delete(id);
   }
 }

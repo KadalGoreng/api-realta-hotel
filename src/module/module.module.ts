@@ -52,14 +52,14 @@ import { Vendor } from 'output/entities/Vendor';
 import { VendorProduct } from 'output/entities/VendorProduct';
 import { WorkOrderDetail } from 'output/entities/WorkOrderDetail';
 import { WorkOrders } from 'output/entities/WorkOrders';
-import { FacilitiesController } from 'src/facilities/facilities.controller';
-import { FacilitiesService } from 'src/facilities/facilities.service';
-// import { FacilityPhotoController } from 'src/facility-photo/facility-photo.controller';
-// import { FacilityPhotoService } from 'src/facility-photo/facility-photo.service';
-import { FacilityPriceHistoryController } from 'src/facility-price-history/facility-price-history.controller';
-import { FacilityPriceHistoryService } from 'src/facility-price-history/facility-price-history.service';
-import { HotelReviewController } from 'src/hotel-reviews/hotel-reviews.controller';
-import { HotelReviewsService } from 'src/hotel-reviews/hotel-reviews.service';
+import { FacilitiesController } from 'src/hotels/facilities/facilities.controller';
+import { FacilitiesService } from 'src/hotels/facilities/facilities.service';
+import { FacilityPhotoController } from 'src/hotels/facility-photo/facility-photo.controller';
+import { FacilityPhotoService } from 'src/hotels/facility-photo/facility-photo.service';
+import { FacilityPriceHistoryController } from 'src/hotels/facility-price-history/facility-price-history.controller';
+import { FacilityPriceHistoryService } from 'src/hotels/facility-price-history/facility-price-history.service';
+import { HotelReviewController } from 'src/hotels/hotel-reviews/hotel-reviews.controller';
+import { HotelReviewsService } from 'src/hotels/hotel-reviews/hotel-reviews.service';
 import { HotelsController } from 'src/hotels/hotels.controller';
 import { HotelsService } from 'src/hotels/hotels.service';
 import { MulterModule } from '@nestjs/platform-express';
@@ -128,12 +128,14 @@ import { ConfigMulter } from 'src/multer/multer.middleware';
     FacilitiesService,
     HotelReviewsService,
     FacilityPriceHistoryService,
+    FacilityPhotoService,
   ],
   controllers: [
     HotelsController,
     FacilitiesController,
     HotelReviewController,
     FacilityPriceHistoryController,
+    FacilityPhotoController,
   ],
 })
 export class ModuleModule {}

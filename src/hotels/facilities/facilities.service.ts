@@ -19,10 +19,10 @@ export class FacilitiesService {
     });
   }
 
-  public async findOne(id: number) {
+  public async findOne(FaciId: number) {
     return await this.facilitiesRepo.findOne({
       where: {
-        faciId: id,
+        faciId: FaciId,
       },
       relations: {
         faciCagro: true,
