@@ -5,7 +5,7 @@
     "host": "localhost",
     "port": 5432,
     "username": "postgres",
-    "password": "pokwe",
+    "password": "root",
     "database": "",
     "synchronize": false,
     "entities": ["entities/*.js"]

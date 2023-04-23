@@ -1,5 +1,13 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { BankController } from 'src/payment/bank/bank.controller';
+import { BankService } from 'src/payment/bank/bank.service';
+import { PaymentGatewayController } from 'src/payment/paygateway/paygateway.controller';
+import { PaymentGatewayService } from 'src/payment/paygateway/paygateway.service';
+import { PaymentTransactionController } from 'src/payment/paytransaction/paytransaction.controller';
+import { PaymentTransactionService } from 'src/payment/paytransaction/paytransaction.service';
+import { UserAccountController } from 'src/payment/useraccount/useraccount.controller';
+import { UserAccountService } from 'src/payment/useraccount/useraccount.service';
 import { Address } from 'output/entities/Address';
 import { Bank } from 'output/entities/Bank';
 import { BookingOrderDetail } from 'output/entities/BookingOrderDetail';
@@ -120,22 +128,88 @@ import { ConfigMulter } from 'src/multer/multer.middleware';
       VendorProduct,
       WorkOrderDetail,
       WorkOrders,
+      Hotels,
+      HotelReviews,
+      Facilities,
+      FacilityPhoto,
+      FacilityPriceHistory,
+      Address,
+      Bank,
+      BookingOrderDetail,
+      BookingOrderDetailExtra,
+      BookingOrders,
+      CategoryGroup,
+      Country,
+      Department,
+      Employee,
+      EmployeeDepartmentHistory,
+      EmployeePayHistory,
+      Entitys,
+      JobRole,
+      Members,
+      OrderMenuDetail,
+      OrderMenus,
+      PaymentGateway,
+      PaymentTransaction,
+      Policy,
+      PolicyCategoryGroup,
+      PriceItems,
+      Proviences,
+      PurchaseOrderDetail,
+      PurchaseOrderHeader,
+      Regions,
+      RestoMenuPhotos,
+      RestoMenus,
+      Roles,
+      ServiceTask,
+      Shift,
+      SpecialOfferCoupons,
+      SpecialOffers,
+      StockDetail,
+      StockPhoto,
+      Stocks,
+      UserAccounts,
+      UserBonusPoints,
+      UserBreakfeast,
+      UserMembers,
+      UserPassword,
+      UserProfiles,
+      UserRoles,
+      Users,
+      Vendor,
+      VendorProduct,
+      WorkOrderDetail,
+      WorkOrders,
     ]),
     MulterModule.register(ConfigMulter.Uploadfiles()),
   ],
+  controllers: [
+    BankController,
+    PaymentGatewayController,
+    PaymentTransactionController,
+    UserAccountController,
+    HotelsController,
+    FacilitiesController,
+    HotelReviewController,
+    FacilityPriceHistoryController,
+    FacilityPhotoController,
+  ],
   providers: [
+    BankService,
+    PaymentGatewayService,
+    PaymentTransactionService,
+    UserAccountService,
     HotelsService,
     FacilitiesService,
     HotelReviewsService,
     FacilityPriceHistoryService,
     FacilityPhotoService,
   ],
-  controllers: [
-    HotelsController,
-    FacilitiesController,
-    HotelReviewController,
-    FacilityPriceHistoryController,
-    FacilityPhotoController,
+  exports: [
+    BankService,
+    PaymentGatewayService,
+    PaymentTransactionService,
+    UserAccountService,
   ],
 })
 export class ModuleModule {}
