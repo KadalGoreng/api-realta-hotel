@@ -21,6 +21,11 @@ export class PaymentTransactionController {
   public async getOne(@Param('id') id: number) {
     return await this.paytranService.findOne(id);
   }
+  // @Get('user')
+  // public async get() {
+  //   return await this.paytranService.getAll();
+  // }
+
   @Post()
   public async Create(
     @Body('patr_number') patr_number: string,

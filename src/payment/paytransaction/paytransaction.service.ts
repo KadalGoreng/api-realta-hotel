@@ -1,18 +1,38 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Bank } from 'output/entities/Bank';
+import { PaymentGateway } from 'output/entities/PaymentGateway';
 import { PaymentTransaction } from 'output/entities/PaymentTransaction';
-import { Repository } from 'typeorm';
+import { Users } from 'output/entities/Users';
+import { ILike, Repository } from 'typeorm';
 
 @Injectable()
 export class PaymentTransactionService {
   constructor(
     @InjectRepository(PaymentTransaction)
     private paytranRepo: Repository<PaymentTransaction>,
+    @InjectRepository(Bank) private bankRepo: Repository<Bank>,
+    @InjectRepository(PaymentGateway)
+    private pagaRepo: Repository<PaymentGateway>,
   ) {}
 
   public async findAll() {
-    return await this.paytranRepo.find();
+    return await this.paytranRepo.find({
+      relations: ['patrUser'],
+    });
   }
+
+  // public async getAll() {
+  //   try {
+  //     const transaction = await this.paytranRepo
+  //       .createQueryBuilder('payment_transaction')
+  //       .innerJoin('users', 'payment_transaction.patr_user_id', 'users.user_id')
+  //       .getMany();
+  //     return transaction;
+  //   } catch (error) {
+  //     return error.message;
+  //   }
+  // }
 
   public async findOne(id: number) {
     return await this.paytranRepo.findOne({ where: { patrId: id } });

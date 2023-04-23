@@ -71,4 +71,11 @@ export class UserAccountController {
   public async Delete(@Param('id') id: number) {
     return await this.useraccService.Delete(id);
   }
+  @Get('search/:keyword/:user')
+  public async search(
+    @Param('keyword') keyword: string,
+    @Param('user') user: number,
+  ) {
+    return await this.useraccService.Search(keyword, user);
+  }
 }
