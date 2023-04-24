@@ -72,6 +72,10 @@ import { HotelsController } from 'src/hotels/hotels.controller';
 import { HotelsService } from 'src/hotels/hotels.service';
 import { MulterModule } from '@nestjs/platform-express';
 import { ConfigMulter } from 'src/multer/multer.middleware';
+import { BookingOrderController } from 'src/booking/order/order.controller';
+import { SpecialOfferController } from 'src/booking/special-offer/special-offer.controller';
+import { BookingOrderService } from 'src/booking/order/order.service';
+import { SpecialOfferService } from 'src/booking/special-offer/special-offer.service';
 
 @Module({
   imports: [
@@ -193,6 +197,8 @@ import { ConfigMulter } from 'src/multer/multer.middleware';
     HotelReviewController,
     FacilityPriceHistoryController,
     FacilityPhotoController,
+    BookingOrderController,
+    SpecialOfferController,
   ],
   providers: [
     BankService,
@@ -204,6 +210,8 @@ import { ConfigMulter } from 'src/multer/multer.middleware';
     HotelReviewsService,
     FacilityPriceHistoryService,
     FacilityPhotoService,
+    BookingOrderService,
+    SpecialOfferService,
   ],
   exports: [
     BankService,
