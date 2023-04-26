@@ -14,6 +14,7 @@ export class HotelsService {
     return await this.hotelsRepo.find({
       relations: {
         hotelAddr: true,
+        hotelReviews: { horeUser: true },
       },
     });
   }
