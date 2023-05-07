@@ -21,8 +21,11 @@ export class UserAccountService {
     });
   }
 
-  public async findOne(id: number) {
-    return await this.useraccRepo.findOne({ where: { usacEntityId: id } });
+  public async findOne(id: string) {
+    return await this.useraccRepo.findOne({
+      where: { usacAccountNumber: id },
+      relations: ['usacEntity', 'usacEntity.bank', 'usacEntity.paymentGateway'],
+    });
   }
 
   public async Create(
@@ -67,7 +70,6 @@ export class UserAccountService {
         {
           usacEntityId: entity,
           usacUserId: user,
-          usacAccountNumber: account,
         },
         {
           usacEntityId: usac_entityId,

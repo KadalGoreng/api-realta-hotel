@@ -18,7 +18,7 @@ export class UserAccountController {
     return await this.useraccService.findAll();
   }
   @Get(':id')
-  public async getOne(@Param('id') id: number) {
+  public async getOne(@Param('id') id: string) {
     return await this.useraccService.findOne(id);
   }
   @Post()
