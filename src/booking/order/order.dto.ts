@@ -2,8 +2,6 @@ import { BookingOrderDetail } from 'output/entities/BookingOrderDetail';
 import { Hotels } from 'output/entities/Hotels';
 
 export class createOrderDto {
-  boorId: number;
-  boorOrderNumber: string;
   boorOrderDate: Date;
   boorArrivalDate: Date;
   boorTotalRoom: number;
@@ -19,5 +17,10 @@ export class createOrderDto {
   boorMemberType: string;
   boorStatus: string;
   bookingOrderDetail: BookingOrderDetail;
-  boorHotel: Hotels;
+  boorHotel: {
+    hotelId: number;
+  };
+  boorUser: {
+    userId: number;
+  };
 }

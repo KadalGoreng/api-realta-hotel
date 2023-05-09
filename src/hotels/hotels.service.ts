@@ -15,7 +15,9 @@ export class HotelsService {
       relations: {
         hotelAddr: true,
         hotelReviews: { horeUser: true },
+        facilities: { faciCagro: true },
       },
+      order: { facilities: { faciId: 1 } },
     });
   }
 
