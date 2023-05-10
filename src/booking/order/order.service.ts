@@ -18,10 +18,11 @@ export class BookingOrderService {
     });
   }
 
-  public async findOne(id: number) {
+  public async findByIdUser(id: number) {
     return await this.bookingOrderService.findOne({
-      where: { boorId: id },
-      relations: { bookingOrderDetail: true },
+      where: { boorUser: { userId: id } },
+      relations: { bookingOrderDetail: true, boorUser: true },
+      order: { boorId: -1 },
     });
   }
 

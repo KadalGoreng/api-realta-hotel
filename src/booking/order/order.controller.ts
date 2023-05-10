@@ -13,7 +13,7 @@ export class BookingOrderController {
 
   @Get(':id')
   public async getBookingOrderById(@Param('id') id: number) {
-    return await this.service.findOne(id);
+    return await this.service.findByIdUser(id);
   }
 
   @Post()
