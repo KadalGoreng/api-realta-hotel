@@ -17,5 +17,7 @@ import { ModuleModule } from './module/module.module';
     }),
     ModuleModule,
   ],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

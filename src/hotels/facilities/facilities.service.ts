@@ -19,6 +19,18 @@ export class FacilitiesService {
     });
   }
 
+  public async find(id: number) {
+    return await this.facilitiesRepo.find({
+      where: {
+        faciHotel: { hotelId: id },
+      },
+      relations: {
+        faciCagro: true,
+        faciHotel: true,
+      },
+    });
+  }
+
   public async findOne(FaciId: number) {
     return await this.facilitiesRepo.findOne({
       where: {

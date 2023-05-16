@@ -18,6 +18,11 @@ export class FacilitiesController {
     return await this.ServicesFacilities.findAll();
   }
 
+  @Get('hotel/:id')
+  public async getFacilityByHotel(@Param('id') id: number) {
+    return await this.ServicesFacilities.find(id);
+  }
+
   @Get('/:id')
   public async getOne(@Param('faciId') faciId: number) {
     return await this.ServicesFacilities.findOne(faciId);

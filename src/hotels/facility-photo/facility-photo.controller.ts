@@ -6,11 +6,15 @@ import {
   Param,
   Post,
   Put,
-  UploadedFiles,
+  Res,
+  UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
 import { FacilityPhotoService } from './facility-photo.service';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { Facilities } from 'output/entities/Facilities';
+import { of } from 'rxjs';
+import { join } from 'path';
 
 @Controller('/facilityPhoto')
 export class FacilityPhotoController {
@@ -26,54 +30,45 @@ export class FacilityPhotoController {
     return await this.ServicesFacilityPhoto.findOne(id);
   }
 
-  @Post('/upload')
-  @UseInterceptors(FileInterceptor('files'))
-  public async upload(
-    @UploadedFiles() files,
-    @Body()
-    body: { faphoThumbnailFilename: string; faphoPhotoFilename: string },
-  ) {
-    const { faphoThumbnailFilename, faphoPhotoFilename } = body;
-    return await this.ServicesFacilityPhoto.Upload(files);
-  }
-
   @Post()
-  public async Create(
-    @Body('faphoId') faphoId,
-    @Body('faphoFaciId') faphoFaciId: number,
-    @Body('faphoPrimary') faphoPrimary: boolean,
-    @Body('faphoUrl') faphoUrl: string,
-    @Body('faphoModifiedDate') faphoModifiedDate: Date = new Date(),
+  @UseInterceptors(FileInterceptor('file'))
+  public async create(
+    @UploadedFile() file,
+    @Body()
+    createFacilityPhoto: {
+      faphoPrimary: boolean;
+      faphoUrl: string;
+      faphoFaci: Facilities;
+    },
   ) {
-    return await this.ServicesFacilityPhoto.Create(
-      faphoId,
-      faphoFaciId,
-      faphoPrimary,
-      faphoUrl,
-      faphoModifiedDate,
-    );
+    return await this.ServicesFacilityPhoto.Upload(file, createFacilityPhoto);
   }
 
   @Put('/:faphoId')
   public async Update(
     @Param('faphoId') faphoId: number,
-    @Body('faphoThumbnailFilename') faphoThumbnailFilename: string,
-    @Body('faphoPhotoFilename') faphoPhotoFilename: string,
-    @Body('faphoPrimary') faphoPrimary: boolean,
-    @Body('faphoUrl') faphoUrl: string,
-    @Body('faphoModifiedDate') faphoModifiedDate: Date = new Date(),
+    @UploadedFile() file,
+    @Body()
+    createFacilityPhoto: {
+      faphoPrimary: boolean;
+      faphoUrl: string;
+      faphoFaci: Facilities;
+    },
   ) {
     return await this.ServicesFacilityPhoto.Update(
       faphoId,
-      faphoThumbnailFilename,
-      faphoPhotoFilename,
-      faphoPrimary,
-      faphoUrl,
-      faphoModifiedDate,
+      file,
+      createFacilityPhoto,
     );
   }
+
   @Delete('/:id')
   public async Delete(@Param('id') id: string) {
     return await this.ServicesFacilityPhoto.Delete(id);
+  }
+
+  @Get('image/:imagename')
+  findImage(@Param('imagename') imagename: any, @Res() res: any) {
+    return of(res.sendFile(join(process.cwd(), 'uploads/' + imagename)));
   }
 }

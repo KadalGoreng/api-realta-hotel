@@ -64,6 +64,10 @@ import { HotelsController } from 'src/hotels/hotels.controller';
 import { HotelsService } from 'src/hotels/hotels.service';
 import { MulterModule } from '@nestjs/platform-express';
 import { ConfigMulter } from 'src/multer/multer.middleware';
+import { AddressController } from 'src/master/address/address.controller';
+import { AddressService } from 'src/master/address/address.service';
+import { CategoryGroupService } from 'src/master/category-group/category-group.service';
+import { CategoryGroupController } from 'src/master/category-group/category-group.controller';
 
 @Module({
   imports: [
@@ -129,6 +133,8 @@ import { ConfigMulter } from 'src/multer/multer.middleware';
     HotelReviewsService,
     FacilityPriceHistoryService,
     FacilityPhotoService,
+    AddressService,
+    CategoryGroupService,
   ],
   controllers: [
     HotelsController,
@@ -136,6 +142,8 @@ import { ConfigMulter } from 'src/multer/multer.middleware';
     HotelReviewController,
     FacilityPriceHistoryController,
     FacilityPhotoController,
+    AddressController,
+    CategoryGroupController,
   ],
 })
 export class ModuleModule {}
