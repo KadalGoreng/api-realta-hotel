@@ -9,7 +9,7 @@ import { ModuleModule } from './module/module.module';
       host: 'localhost',
       port: 5432,
       username: 'postgres',
-      password: '',
+      password: 'root',
       database: 'realta-hotel',
       entities: ['../output/entities/*.ts'],
       synchronize: false,

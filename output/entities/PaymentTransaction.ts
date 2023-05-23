@@ -27,10 +27,10 @@ export class PaymentTransaction {
   patrTrxId: string | null;
 
   @Column('numeric', { name: 'patr_debet', nullable: true })
-  patrDebet: string | null;
+  patrDebet: number | null;
 
   @Column('numeric', { name: 'patr_credit', nullable: true })
-  patrCredit: string | null;
+  patrCredit: number | null;
 
   @Column('character', { name: 'patr_type', nullable: true, length: 3 })
   patrType: string | null;

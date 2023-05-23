@@ -29,8 +29,7 @@ export class PaymentTransactionController {
   @Post()
   public async Create(
     @Body('patr_number') patr_number: string,
-    @Body('patr_debet') patr_debet: string,
-    @Body('patr_credit') patr_credit: string,
+    @Body('nominal') nominal: number,
     @Body('patr_type') patr_type: string,
     @Body('patr_note') patr_note: string,
     @Body('order_number') order_number: string,
@@ -41,8 +40,7 @@ export class PaymentTransactionController {
   ) {
     return await this.paytranService.Create(
       patr_number,
-      patr_debet,
-      patr_credit,
+      nominal,
       patr_type,
       patr_note,
       order_number,
