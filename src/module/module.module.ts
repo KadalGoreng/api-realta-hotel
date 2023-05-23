@@ -1,4 +1,20 @@
 import { Module } from '@nestjs/common';
+import { RolesService } from 'src/users/roles/roles.service';
+import { RolesController } from 'src/users/roles/roles.controller';
+import { UsersService } from 'src/users/users/users.service';
+import { UsersController } from 'src/users/users/users.controller';
+import { UserRolesService } from 'src/users/user-roles/user-roles.service';
+import { UserRolesController } from 'src/users/user-roles/user-roles.controller';
+import { UserBonusPointsService } from 'src/users/user-bonus-points/user-bonus-points.service';
+import { UserBonusPointsController } from 'src/users/user-bonus-points/user-bonus-points.controller';
+import UserPasswordService from 'src/users/user-password/user-password.service';
+import { UserPasswordController } from 'src/users/user-password/user-password.controller';
+import { UserMembersService } from 'src/users/user-members/user-members.service';
+import { UserMembersController } from 'src/users/user-members/user-members.controller';
+import { UserProfilesService } from 'src/users/user-profiles/user-profiles.service';
+import { UserProfilesController } from 'src/users/user-profiles/user-profiles.controller';
+import { UserController } from 'src/users/user/user.controller';
+import { UserService } from 'src/users/user/user.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BankController } from 'src/payment/bank/bank.controller';
 import { BankService } from 'src/payment/bank/bank.service';
@@ -72,6 +88,10 @@ import { HotelsController } from 'src/hotels/hotels.controller';
 import { HotelsService } from 'src/hotels/hotels.service';
 import { MulterModule } from '@nestjs/platform-express';
 import { ConfigMulter } from 'src/multer/multer.middleware';
+import { JwtModule } from '@nestjs/jwt';
+import { PassportModule } from '@nestjs/passport';
+import { LocalGuard } from 'src/auth/local.strategy';
+import { JwtGuard } from 'src/auth/jwt.strategy';
 
 @Module({
   imports: [

@@ -37,6 +37,7 @@ export class PaymentTransaction {
 
   @Column('character varying', {
     name: 'patr_note',
+
     nullable: true,
     length: 255,
   })
