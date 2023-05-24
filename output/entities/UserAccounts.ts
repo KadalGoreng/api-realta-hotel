@@ -23,7 +23,7 @@ export class UserAccounts {
   usacAccountNumber: string | null;
 
   @Column('numeric', { name: 'usac_saldo', nullable: true })
-  usacSaldo: number | null;
+  usacSaldo: string | null;
 
   @Column('character varying', {
     name: 'usac_type',

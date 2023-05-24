@@ -17,6 +17,10 @@ export class UserAccountController {
   public async getAll() {
     return await this.useraccService.findAll();
   }
+  @Get('user/:id')
+  public async getOneUser(@Param('id') id: number) {
+    return await this.useraccService.findByUser(id);
+  }
   @Get(':id')
   public async getOne(@Param('id') id: string) {
     return await this.useraccService.findOne(id);
@@ -26,7 +30,7 @@ export class UserAccountController {
     @Body('usac_entity_id') usac_entity_id: number,
     @Body('usac_user_id') usac_user_id: number,
     @Body('usac_acc_number') usac_acc_number: string,
-    @Body('usac_saldo') usac_saldo: number,
+    @Body('usac_saldo') usac_saldo: string,
     @Body('usac_type') usac_type: string,
     @Body('usac_exp_month') usac_exp_month: number,
     @Body('usac_exp_year') usac_exp_year: number,
@@ -49,7 +53,7 @@ export class UserAccountController {
     @Body('usac_entity_id') usac_entity_id: number,
     @Body('usac_user_id') usac_user_id: number,
     @Body('usac_acc_number') usac_acc_number: string,
-    @Body('usac_saldo') usac_saldo: number,
+    @Body('usac_saldo') usac_saldo: string,
     @Body('usac_type') usac_type: string,
     @Body('usac_exp_month') usac_exp_month: number,
     @Body('usac_exp_year') usac_exp_year: number,

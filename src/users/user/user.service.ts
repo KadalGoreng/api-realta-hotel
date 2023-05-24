@@ -83,6 +83,7 @@ export class UserService {
 
   public async login(user: any) {
     const payload = {
+      userId: user.userId,
       username: user.userFullName,
       email: user.userEmail,
       member: user.userMembers,

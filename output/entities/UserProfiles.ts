@@ -32,38 +32,15 @@ export class UserProfiles {
   })
   usproJobTitle: string | null;
 
-<<<<<<< HEAD
-  @Column("character", {
-    name: "uspro_martial_status",
-=======
   @Column('character', {
     name: 'uspro_martial_status',
->>>>>>> origin/users
     nullable: true,
     length: 1,
   })
   usproMartialStatus: string | null;
 
-<<<<<<< HEAD
-  @Column("character", { name: "uspro_gender", nullable: true, length: 1 })
-  usproGender: string | null;
-
-  @ManyToOne(() => Address, (address) => address.userProfiles, {
-    onDelete: "CASCADE",
-    onUpdate: "CASCADE",
-  })
-  @JoinColumn([{ name: "uspro_addr_id", referencedColumnName: "addrId" }])
-  usproAddr: Address;
-
-  @ManyToOne(() => Users, (users) => users.userProfiles, {
-    onDelete: "CASCADE",
-    onUpdate: "CASCADE",
-  })
-  @JoinColumn([{ name: "uspro_user_id", referencedColumnName: "userId" }])
-=======
   @Column('character', { name: 'uspro_gender', nullable: true, length: 1 })
   usproGender: string | null;
-
   @ManyToOne(() => Address, (address) => address.userProfiles, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
@@ -76,6 +53,5 @@ export class UserProfiles {
     onUpdate: 'CASCADE',
   })
   @JoinColumn([{ name: 'uspro_user_id', referencedColumnName: 'userId' }])
->>>>>>> origin/users
   usproUser: Users;
 }

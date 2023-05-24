@@ -21,20 +21,22 @@ export class PaymentTransactionService {
       relations: ['patrUser'],
     });
   }
-  public async findOne(id: number) {
-    return await this.paytranRepo.findOne({ where: { patrId: id } });
+  public async findOne(id: string) {
+    return await this.paytranRepo.find({
+      where: { patrUserId: id },
+      relations: ['patrUser'],
+    });
   }
 
   public async Create(
     patr_number: string,
-    nominal: number,
+    nominal: string,
     patr_type: string,
     patr_note: string,
     order_number: string,
     source_id: string,
     target_id: string,
     number_ref: string,
-    user_id: string,
   ) {
     try {
       const userSrc = await this.accountsRepo.findOneBy({
@@ -42,7 +44,7 @@ export class PaymentTransactionService {
       });
 
       const transaction = await this.paytranRepo.save({
-        patrTrxId: patr_number,
+        patrTrxId: patr_number + '-OUT',
         patrDebet: nominal,
         patrType: patr_type,
         patrNote: patr_note,
@@ -75,7 +77,8 @@ export class PaymentTransactionService {
         usacAccountNumber: source_id,
       });
 
-      source.usacSaldo = source.usacSaldo - nominal;
+      const srcSaldo = parseInt(source.usacSaldo) - parseInt(nominal);
+      source.usacSaldo = srcSaldo.toString();
       source.usacModifiedDate = new Date();
       await this.accountsRepo.save(source);
 
@@ -83,7 +86,8 @@ export class PaymentTransactionService {
         usacAccountNumber: target_id,
       });
 
-      target.usacSaldo = target.usacSaldo + nominal;
+      const tarSaldo = parseInt(target.usacSaldo) + parseInt(nominal);
+      target.usacSaldo = tarSaldo.toString();
       target.usacModifiedDate = new Date();
       await this.accountsRepo.save(target);
 

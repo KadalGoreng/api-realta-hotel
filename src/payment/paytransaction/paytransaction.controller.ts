@@ -18,7 +18,7 @@ export class PaymentTransactionController {
     return await this.paytranService.findAll();
   }
   @Get(':id')
-  public async getOne(@Param('id') id: number) {
+  public async getOne(@Param('id') id: string) {
     return await this.paytranService.findOne(id);
   }
   // @Get('user')
@@ -29,14 +29,13 @@ export class PaymentTransactionController {
   @Post()
   public async Create(
     @Body('patr_number') patr_number: string,
-    @Body('nominal') nominal: number,
+    @Body('nominal') nominal: string,
     @Body('patr_type') patr_type: string,
     @Body('patr_note') patr_note: string,
     @Body('order_number') order_number: string,
     @Body('source_id') source_id: string,
     @Body('target_id') target_id: string,
     @Body('number_ref') number_ref: string,
-    @Body('user_id') user_id: string,
   ) {
     return await this.paytranService.Create(
       patr_number,
@@ -47,7 +46,6 @@ export class PaymentTransactionController {
       source_id,
       target_id,
       number_ref,
-      user_id,
     );
   }
   @Get('search/:keyword')
