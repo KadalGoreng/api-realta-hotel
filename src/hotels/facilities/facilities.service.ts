@@ -17,7 +17,9 @@ export class FacilitiesService {
       relations: {
         faciCagro: true,
         faciHotel: true,
+        facilityPhotos: true,
       },
+      order: { faciId: 1 },
     });
   }
 

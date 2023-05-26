@@ -1,5 +1,13 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { BankController } from 'src/payment/bank/bank.controller';
+import { BankService } from 'src/payment/bank/bank.service';
+import { PaymentGatewayController } from 'src/payment/paygateway/paygateway.controller';
+import { PaymentGatewayService } from 'src/payment/paygateway/paygateway.service';
+import { PaymentTransactionController } from 'src/payment/paytransaction/paytransaction.controller';
+import { PaymentTransactionService } from 'src/payment/paytransaction/paytransaction.service';
+import { UserAccountController } from 'src/payment/useraccount/useraccount.controller';
+import { UserAccountService } from 'src/payment/useraccount/useraccount.service';
 import { Address } from 'output/entities/Address';
 import { Bank } from 'output/entities/Bank';
 import { BookingOrderDetail } from 'output/entities/BookingOrderDetail';
@@ -64,14 +72,81 @@ import { HotelsController } from 'src/hotels/hotels.controller';
 import { HotelsService } from 'src/hotels/hotels.service';
 import { MulterModule } from '@nestjs/platform-express';
 import { ConfigMulter } from 'src/multer/multer.middleware';
-import { AddressController } from 'src/master/address/address.controller';
+import { BookingOrderController } from 'src/booking/order/order.controller';
+import { SpecialOfferController } from 'src/booking/special-offer/special-offer.controller';
+import { BookingOrderService } from 'src/booking/order/order.service';
+import { SpecialOfferService } from 'src/booking/special-offer/special-offer.service';
+import { RegionsController } from 'src/master/regions/regions.controller';
+import { PolicyController } from 'src/master/policy/policy.controller';
+import { PriceItemsController } from 'src/master/price-items/price-items.controller';
+import { RegionsService } from 'src/master/regions/regions.service';
+import { PolicyService } from 'src/master/policy/policy.service';
+import { PriceItemsService } from 'src/master/price-items/price-items.service';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
+import { OrderDetailExtraController } from 'src/booking/order-detail-extra/order-detail-extra.controller';
+import { OrderDetailExtraService } from 'src/booking/order-detail-extra/order-detail-extra.service';
 import { AddressService } from 'src/master/address/address.service';
 import { CategoryGroupService } from 'src/master/category-group/category-group.service';
-import { CategoryGroupController } from 'src/master/category-group/category-group.controller';
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '../../../', ''),
+    }),
     TypeOrmModule.forFeature([
+      Hotels,
+      HotelReviews,
+      Facilities,
+      FacilityPhoto,
+      FacilityPriceHistory,
+      Address,
+      Bank,
+      BookingOrderDetail,
+      BookingOrderDetailExtra,
+      BookingOrders,
+      CategoryGroup,
+      Country,
+      Department,
+      Employee,
+      EmployeeDepartmentHistory,
+      EmployeePayHistory,
+      Entitys,
+      JobRole,
+      Members,
+      OrderMenuDetail,
+      OrderMenus,
+      PaymentGateway,
+      PaymentTransaction,
+      Policy,
+      PolicyCategoryGroup,
+      PriceItems,
+      Proviences,
+      PurchaseOrderDetail,
+      PurchaseOrderHeader,
+      Regions,
+      RestoMenuPhotos,
+      RestoMenus,
+      Roles,
+      ServiceTask,
+      Shift,
+      SpecialOfferCoupons,
+      SpecialOffers,
+      StockDetail,
+      StockPhoto,
+      Stocks,
+      UserAccounts,
+      UserBonusPoints,
+      UserBreakfeast,
+      UserMembers,
+      UserPassword,
+      UserProfiles,
+      UserRoles,
+      Users,
+      Vendor,
+      VendorProduct,
+      WorkOrderDetail,
+      WorkOrders,
       Hotels,
       HotelReviews,
       Facilities,
@@ -127,23 +202,41 @@ import { CategoryGroupController } from 'src/master/category-group/category-grou
     ]),
     MulterModule.register(ConfigMulter.Uploadfiles()),
   ],
-  providers: [
-    HotelsService,
-    FacilitiesService,
-    HotelReviewsService,
-    FacilityPriceHistoryService,
-    FacilityPhotoService,
-    AddressService,
-    CategoryGroupService,
-  ],
   controllers: [
+    BankController,
+    PaymentGatewayController,
+    PaymentTransactionController,
+    UserAccountController,
     HotelsController,
     FacilitiesController,
     HotelReviewController,
     FacilityPriceHistoryController,
     FacilityPhotoController,
-    AddressController,
-    CategoryGroupController,
+    BookingOrderController,
+    SpecialOfferController,
+    RegionsController,
+    PolicyController,
+    PriceItemsController,
+    OrderDetailExtraController,
+  ],
+  providers: [
+    BankService,
+    PaymentGatewayService,
+    PaymentTransactionService,
+    UserAccountService,
+    HotelsService,
+    FacilitiesService,
+    HotelReviewsService,
+    FacilityPriceHistoryService,
+    FacilityPhotoService,
+    BookingOrderService,
+    SpecialOfferService,
+    RegionsService,
+    PolicyService,
+    PriceItemsService,
+    OrderDetailExtraService,
+    AddressService,
+    CategoryGroupService,
   ],
 })
 export class ModuleModule {}
