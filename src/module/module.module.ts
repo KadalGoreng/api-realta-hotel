@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { MulterModule } from '@nestjs/platform-express';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Address } from 'output/entities/Address';
 import { Bank } from 'output/entities/Bank';
@@ -52,31 +53,45 @@ import { Vendor } from 'output/entities/Vendor';
 import { VendorProduct } from 'output/entities/VendorProduct';
 import { WorkOrderDetail } from 'output/entities/WorkOrderDetail';
 import { WorkOrders } from 'output/entities/WorkOrders';
-import { PurchaseOrderDetailController } from 'src/purchase-order-detail/purchase-order-detail.controller';
-import { PurchaseOrderDetailService } from 'src/purchase-order-detail/purchase-order-detail.service';
-import { PurchaseOrderHeaderController } from 'src/purchase-order-header/purchase-order-header.controller';
-import { PurchaseOrderHeaderService } from 'src/purchase-order-header/purchase-order-header.service';
-import { StockDetailController } from 'src/stock-detail/stock-detail.controller';
-import { StockDetailService } from 'src/stock-detail/stock-detail.service';
-import { StockPhotoController } from 'src/stock-photo/stock-photo.controller';
-import { StockPhotoService } from 'src/stock-photo/stock-photo.service';
-import { StocksController } from 'src/stocks/stocks.controller';
-import { StocksService } from 'src/stocks/stocks.service';
-import { VendorProductController } from 'src/vendor-product/vendor-product.controller';
-import { VendorProductService } from 'src/vendor-product/vendor-product.service';
-import { VendorController } from 'src/vendor/vendor.controller';
-import { VendorService } from 'src/vendor/vendor.service';
-// import { FacilitiesController } from 'src/facilities/facilities.controller';
-// import { FacilitiesService } from 'src/facilities/facilities.service';
-// import { FacilityPriceHistoryController } from 'src/facility-price-history/facility-price-history.controller';
-// import { FacilityPriceHistoryService } from 'src/facility-price-history/facility-price-history.service';
-// import { HotelReviewController } from 'src/hotel-reviews/hotel-reviews.controller';
-// import { HotelReviewsService } from 'src/hotel-reviews/hotel-reviews.service';
-// import { HotelsController } from 'src/hotels/hotels.controller';
-// import { HotelsService } from 'src/hotels/hotels.service';
+import { ConfigMulter } from 'src/multer/multer.middleware';
+
+import { PurchaseOrderDetailController } from 'src/purchasing/purchase-order-detail/purchase-order-detail.controller';
+import { PurchaseOrderDetailService } from 'src/purchasing/purchase-order-detail/purchase-order-detail.service';
+import { PurchaseOrderHeaderController } from 'src/purchasing/purchase-order-header/purchase-order-header.controller';
+import { PurchaseOrderHeaderService } from 'src/purchasing/purchase-order-header/purchase-order-header.service';
+import { StockDetailController } from 'src/purchasing/stock-detail/stock-detail.controller';
+import { StockDetailService } from 'src/purchasing/stock-detail/stock-detail.service';
+import { StockPhotoController } from 'src/purchasing/stock-photo/stock-photo.controller';
+import { StockPhotoService } from 'src/purchasing/stock-photo/stock-photo.service';
+import { StocksController } from 'src/purchasing/stocks/stocks.controller';
+import { StocksService } from 'src/purchasing/stocks/stocks.service';
+import { VendorProductController } from 'src/purchasing/vendor-product/vendor-product.controller';
+import { VendorProductService } from 'src/purchasing/vendor-product/vendor-product.service';
+import { VendorController } from 'src/purchasing/vendor/vendor.controller';
+import { VendorService } from 'src/purchasing/vendor/vendor.service';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
+
+// import { PurchaseOrderDetailController } from 'src/purchase-order-detail/purchase-order-detail.controller';
+// import { PurchaseOrderDetailService } from 'src/purchase-order-detail/purchase-order-detail.service';
+// import { PurchaseOrderHeaderController } from 'src/purchase-order-header/purchase-order-header.controller';
+// import { PurchaseOrderHeaderService } from 'src/purchase-order-header/purchase-order-header.service';
+// import { StockDetailController } from 'src/stock-detail/stock-detail.controller';
+// import { StockDetailService } from 'src/stock-detail/stock-detail.service';
+// import { StockPhotoController } from 'src/stock-photo/stock-photo.controller';
+// import { StockPhotoService } from 'src/stock-photo/stock-photo.service';
+// import { StocksController } from 'src/stocks/stocks.controller';
+// import { StocksService } from 'src/stocks/stocks.service';
+// import { VendorProductController } from 'src/vendor-product/vendor-product.controller';
+// import { VendorProductService } from 'src/vendor-product/vendor-product.service';
+// import { VendorController } from 'src/vendor/vendor.controller';
+// import { VendorService } from 'src/vendor/vendor.service';
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '../../../', ''),
+    }),
     TypeOrmModule.forFeature([
       Hotels,
       HotelReviews,
@@ -131,6 +146,7 @@ import { VendorService } from 'src/vendor/vendor.service';
       WorkOrderDetail,
       WorkOrders,
     ]),
+    MulterModule.register(ConfigMulter.Uploadfiles()),
   ],
   controllers: [
     StocksController,
