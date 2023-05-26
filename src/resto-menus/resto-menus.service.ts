@@ -14,9 +14,9 @@ export class RestoMenusService {
     return this.restoMenusRepository.find();
   }
 
-  async findOne(id: string): Promise<RestoMenus> {
+  async findOne(id: string) {
     const findOneOptions: FindOneOptions<RestoMenus> = {
-      where: { remeId: id },
+      where: { remeId: Number(id) },
     };
     return this.restoMenusRepository.findOne(findOneOptions);
   }
@@ -25,15 +25,13 @@ export class RestoMenusService {
     return this.restoMenusRepository.save(restoMenu);
   }
 
-  async update(id: string, restoMenu: RestoMenus): Promise<RestoMenus> {
-    const updatedRestoMenu = await this.restoMenusRepository.findOne(id);
-    updatedRestoMenu.remeFaciId = restoMenu.remeFaciId;
-    updatedRestoMenu.remeName = restoMenu.remeName;
-    updatedRestoMenu.remeDescription = restoMenu.remeDescription;
-    updatedRestoMenu.remePrice = restoMenu.remePrice;
-    updatedRestoMenu.remeStatus = restoMenu.remeStatus;
-    updatedRestoMenu.remeModifiedDate = new Date();
-
-    return this.restoMenusRepository.save(updatedRestoMenu);
+  async update(id: string, restoMenu: any) {
+    return await this.restoMenusRepository.update(id, {
+      remeName: restoMenu.remeName,
+      remeDescription: restoMenu.remeDescription,
+      remePrice: restoMenu.remePrice,
+      remeStatus: restoMenu.remeStatus,
+      remeModifiedDate: new Date(),
+    });
   }
 }

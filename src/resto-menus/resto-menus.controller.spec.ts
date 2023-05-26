@@ -22,10 +22,7 @@ export class RestoMenusController {
   }
 
   @Put(':id')
-  async update(
-    @Param('id') id: string,
-    @Body() restoMenu: RestoMenus,
-  ): Promise<RestoMenus> {
+  async update(@Param('id') id: string, @Body() restoMenu: RestoMenus) {
     return this.restoMenusService.update(id, restoMenu);
   }
 }
