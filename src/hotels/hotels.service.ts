@@ -35,7 +35,7 @@ export class HotelsService {
     hotelRatingStar: number,
     hotelPhonenumber: string,
     hotelModifiedDate: Date = new Date(),
-    hotelAdddr: Address,
+    hotelAddr: Address,
   ) {
     try {
       const hotels = await this.hotelsRepo.save({
@@ -44,7 +44,7 @@ export class HotelsService {
         hotelRatingStar: hotelRatingStar,
         hotelPhonenumber: hotelPhonenumber,
         hotelModifiedDate: hotelModifiedDate,
-        hotelAdddr: hotelAdddr,
+        hotelAddr: hotelAddr,
       });
       return hotels;
     } catch (error) {

@@ -8,6 +8,8 @@ import {
   Put,
 } from '@nestjs/common';
 import { FacilitiesService } from './facilities.service';
+import { CategoryGroup } from 'output/entities/CategoryGroup';
+import { Hotels } from 'output/entities/Hotels';
 
 @Controller('/facilities')
 export class FacilitiesController {
@@ -24,13 +26,12 @@ export class FacilitiesController {
   }
 
   @Get('/:id')
-  public async getOne(@Param('faciId') faciId: number) {
-    return await this.ServicesFacilities.findOne(faciId);
+  public async getOne(@Param('id') id: number) {
+    return await this.ServicesFacilities.findOne(id);
   }
 
   @Post()
   public async Create(
-    @Body('faciId') faciId,
     @Body('faciName') faciName: string,
     @Body('faciMaxNumber') faciMaxNumber: number,
     @Body('faciMeasureUnit') faciMeasureUnit: string,
@@ -43,11 +44,10 @@ export class FacilitiesController {
     @Body('faciTaxRate') faciTaxRate: string,
     @Body('faciModifiedDate') faciModifiedDate: Date = new Date(),
     @Body('faciRatePrice') faciRatePrice: string,
-    @Body('faciCagroId') faciCagro,
-    @Body('faciHotelId') faciHotel,
+    @Body('faciCagro') faciCagro: CategoryGroup,
+    @Body('faciHotel') faciHotel: Hotels,
   ) {
     return await this.ServicesFacilities.Create(
-      faciId,
       faciName,
       faciMaxNumber,
       faciMeasureUnit,
@@ -79,8 +79,8 @@ export class FacilitiesController {
     @Body('faciDiscount') faciDiscount: string,
     @Body('faciTaxRate') faciTaxRate: string,
     @Body('faciModifiedDate') faciModifiedDate: Date = new Date(),
-    @Body('faciCagroId') faciCagro,
-    @Body('faciHotelId') faciHotel,
+    @Body('faciCagroId') faciCagro: CategoryGroup,
+    @Body('faciHotelId') faciHotel: Hotels,
   ) {
     return await this.ServicesFacilities.Update(
       id,

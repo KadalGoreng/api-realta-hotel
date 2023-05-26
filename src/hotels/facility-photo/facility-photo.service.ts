@@ -30,6 +30,13 @@ export class FacilityPhotoService {
     });
   }
 
+  public async findMany(id: number) {
+    return await this.facilityPhotoRepo.find({
+      where: { faphoFaci: { faciId: id } },
+      relations: { faphoFaci: true },
+    });
+  }
+
   public async Upload(
     file: any,
     facilityPhotoDetail: {
@@ -49,29 +56,45 @@ export class FacilityPhotoService {
       return error.message;
     }
   }
-
   public async Update(
-    faphoId: number,
-    file: any,
+    id: number,
     facilityPhotoDetail: {
       faphoPrimary: boolean;
-      faphoFaci: Facilities;
     },
   ) {
     try {
-      const facilityPhoto = await this.facilityPhotoRepo.update(faphoId, {
+      const hotels = await this.facilityPhotoRepo.update(id, {
         ...facilityPhotoDetail,
-        faphoThumbnailFilename: file.originalname,
-        faphoPhotoFilename: file.originalname,
         faphoModifiedDate: new Date(),
       });
-      return facilityPhoto;
+      return hotels;
     } catch (error) {
       return error.message;
     }
   }
 
-  public async Delete(id: string) {
+  // public async Update(
+  //   faphoId: number,
+  //   file: any,
+  //   facilityPhotoDetail: {
+  //     faphoPrimary: boolean;
+  //     faphoFaci: Facilities;
+  //   },
+  // ) {
+  //   try {
+  //     const facilityPhoto = await this.facilityPhotoRepo.update(faphoId, {
+  //       ...facilityPhotoDetail,
+  //       faphoThumbnailFilename: file.originalname,
+  //       faphoPhotoFilename: file.originalname,
+  //       faphoModifiedDate: new Date(),
+  //     });
+  //     return facilityPhoto;
+  //   } catch (error) {
+  //     return error.message;
+  //   }
+  // }
+
+  public async Delete(id: number) {
     try {
       const facilityPhoto = await this.facilityPhotoRepo.delete(id);
       return facilityPhoto;

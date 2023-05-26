@@ -30,6 +30,11 @@ export class FacilityPhotoController {
     return await this.ServicesFacilityPhoto.findOne(id);
   }
 
+  @Get('/many/:id')
+  public async getMany(@Param('id') id: number) {
+    return await this.ServicesFacilityPhoto.findMany(id);
+  }
+
   @Post()
   @UseInterceptors(FileInterceptor('file'))
   public async create(
@@ -44,26 +49,37 @@ export class FacilityPhotoController {
     return await this.ServicesFacilityPhoto.Upload(file, createFacilityPhoto);
   }
 
-  @Put('/:faphoId')
+  // @Put('/:faphoId')
+  // public async Update(
+  //   @Param('faphoId') faphoId: number,
+  //   @UploadedFile() file,
+  //   @Body()
+  //   createFacilityPhoto: {
+  //     faphoPrimary: boolean;
+  //     faphoUrl: string;
+  //     faphoFaci: Facilities;
+  //   },
+  // ) {
+  //   return await this.ServicesFacilityPhoto.Update(
+  //     faphoId,
+  //     file,
+  //     createFacilityPhoto,
+  //   );
+  // }
+
+  @Put(':id')
   public async Update(
-    @Param('faphoId') faphoId: number,
-    @UploadedFile() file,
+    @Param('id') id: number,
     @Body()
     createFacilityPhoto: {
       faphoPrimary: boolean;
-      faphoUrl: string;
-      faphoFaci: Facilities;
     },
   ) {
-    return await this.ServicesFacilityPhoto.Update(
-      faphoId,
-      file,
-      createFacilityPhoto,
-    );
+    return await this.ServicesFacilityPhoto.Update(id, createFacilityPhoto);
   }
 
   @Delete('/:id')
-  public async Delete(@Param('id') id: string) {
+  public async Delete(@Param('id') id: number) {
     return await this.ServicesFacilityPhoto.Delete(id);
   }
 
