@@ -88,6 +88,8 @@ import { OrderDetailExtraController } from 'src/booking/order-detail-extra/order
 import { OrderDetailExtraService } from 'src/booking/order-detail-extra/order-detail-extra.service';
 import { AddressService } from 'src/master/address/address.service';
 import { CategoryGroupService } from 'src/master/category-group/category-group.service';
+import { OrderDetailService } from 'src/booking/order-detail/order-detail.service';
+import { OrderDetailController } from 'src/booking/order-detail/order-detail.controller';
 
 @Module({
   imports: [
@@ -218,6 +220,7 @@ import { CategoryGroupService } from 'src/master/category-group/category-group.s
     PolicyController,
     PriceItemsController,
     OrderDetailExtraController,
+    OrderDetailController,
   ],
   providers: [
     BankService,
@@ -237,6 +240,7 @@ import { CategoryGroupService } from 'src/master/category-group/category-group.s
     OrderDetailExtraService,
     AddressService,
     CategoryGroupService,
+    OrderDetailService,
   ],
 })
 export class ModuleModule {}
