@@ -13,9 +13,7 @@ export class FacilityPhotoService {
 
   public async findAll() {
     return await this.facilityPhotoRepo.find({
-      relations: {
-        faphoFaci: true,
-      },
+      relations: ['faphoFaci'],
     });
   }
 
@@ -24,17 +22,16 @@ export class FacilityPhotoService {
       where: {
         faphoId: id,
       },
-      relations: {
-        faphoFaci: true,
-      },
+      relations: ['faphoFaci'],
     });
   }
 
   public async findMany(id: number) {
-    return await this.facilityPhotoRepo.find({
-      where: { faphoFaci: { faciId: id } },
-      relations: { faphoFaci: true },
-    });
+    return await this.facilityPhotoRepo
+      .createQueryBuilder('facilityPhoto')
+      .leftJoinAndSelect('facilityPhoto.faphoFaci', 'faphoFaci')
+      .where('faphoFaci.faciId = :id', { id })
+      .getMany();
   }
 
   public async Upload(

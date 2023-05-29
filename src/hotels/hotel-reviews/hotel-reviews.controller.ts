@@ -24,41 +24,20 @@ export class HotelReviewController {
   }
 
   @Post()
-  public async Create(
-    @Body('horeId') horeId,
-    @Body('horeUserRiview') horeUserRiview: string,
-    @Body('horeRating') horeRating: number,
-    @Body('horeCreatedOn') horeCreatedOn: Date = new Date(),
-    @Body('horeUserId') horeUser,
-    @Body('horeHotelId') horeHotel,
-  ) {
-    return await this.ServicesHotelReviews.Create(
-      horeId,
-      horeUserRiview,
-      horeRating,
-      horeCreatedOn,
-      horeUser,
-      horeHotel,
-    );
+  public async Create(@Body() createHotelReviewsDto: any) {
+    return await this.ServicesHotelReviews.Create(createHotelReviewsDto);
   }
 
   @Put('/:id')
   public async Update(
     @Param('id') id: number,
-    @Body('horeUserRiview') horeUserRiview: string,
-    @Body('horeRating') horeRating: number,
-    @Body('horeCreatedOn') horeCreatedOn: Date = new Date(),
+    @Body() updateHotelReviewsDto: any,
   ) {
-    return await this.ServicesHotelReviews.Update(
-      id,
-      horeUserRiview,
-      horeRating,
-      horeCreatedOn,
-    );
+    return await this.ServicesHotelReviews.Update(id, updateHotelReviewsDto);
   }
 
   @Delete('/:id')
-  public async Delete(@Param('id') id: string) {
+  public async Delete(@Param('id') id: number) {
     return await this.ServicesHotelReviews.Delete(id);
   }
 }

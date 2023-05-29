@@ -2,6 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { HotelReviews } from 'output/entities/HotelReviews';
 import { Repository } from 'typeorm';
+import {
+  createHotelReviewsDto,
+  updateHotelReviewsDto,
+} from './hotel-reviews.dto';
 
 @Injectable()
 export class HotelReviewsService {
@@ -12,10 +16,7 @@ export class HotelReviewsService {
 
   public async findAll() {
     return await this.hotelReviewsRepo.find({
-      relations: {
-        horeHotel: true,
-        horeUser: true,
-      },
+      relations: ['horeHotel', 'horeUser'],
     });
   }
 
@@ -24,31 +25,13 @@ export class HotelReviewsService {
       where: {
         horeId: id,
       },
-      relations: {
-        horeHotel: true,
-        horeUser: true,
-      },
+      relations: ['horeHotel', 'horeUser'],
     });
   }
 
-  public async Create(
-    horeId,
-    horeUserReview: string,
-    horeRating: number,
-    horeCreatedOn: Date = new Date(),
-    horeUser,
-    horeHotel,
-  ) {
+  public async Create(createHotelReviewsDto: createHotelReviewsDto) {
     try {
-      const hotelReviews = await this.hotelReviewsRepo.save({
-        horeId: horeId,
-        horeUserReview: horeUserReview,
-        horeRating: horeRating,
-        horeCreatedOn: horeCreatedOn,
-        horeUser: horeUser,
-        horeHotel: horeHotel,
-      });
-      return hotelReviews;
+      return await this.hotelReviewsRepo.save(createHotelReviewsDto);
     } catch (error) {
       return error.message;
     }
@@ -56,23 +39,16 @@ export class HotelReviewsService {
 
   public async Update(
     id: number,
-    horeUserReview: string,
-    horeRating: number,
-    horeCreatedOn: Date = new Date(),
+    updateHotelReviewsDto: updateHotelReviewsDto,
   ) {
     try {
-      const hotelReviews = await this.hotelReviewsRepo.update(id, {
-        horeUserReview: horeUserReview,
-        horeRating: horeRating,
-        horeCreatedOn: horeCreatedOn,
-      });
-      return hotelReviews;
+      return await this.hotelReviewsRepo.update(id, updateHotelReviewsDto);
     } catch (error) {
       return error.message;
     }
   }
 
-  public async Delete(id: string) {
+  public async Delete(id: number) {
     try {
       const hotelReviews = await this.hotelReviewsRepo.delete(id);
       return hotelReviews;

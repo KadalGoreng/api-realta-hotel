@@ -2,6 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FacilityPriceHistory } from 'output/entities/FacilityPriceHistory';
 import { Repository } from 'typeorm';
+import {
+  createFacilityPriceHistoryDto,
+  updateFacilityPriceHistoryDto,
+} from './facility-price-history.dto';
 
 @Injectable()
 export class FacilityPriceHistoryService {
@@ -12,10 +16,7 @@ export class FacilityPriceHistoryService {
 
   public async findAll() {
     return await this.facilityPriceHistoryRepo.find({
-      relations: {
-        faphFaci: true,
-        faphUser: true,
-      },
+      relations: ['faphFaci', 'faphUser'],
     });
   }
 
@@ -24,41 +25,17 @@ export class FacilityPriceHistoryService {
       where: {
         faphId: id,
       },
-      relations: {
-        faphFaci: true,
-        faphUser: true,
-      },
+      relations: ['faphFaci', 'faphUser'],
     });
   }
 
   public async Create(
-    faphFaci,
-    faphId,
-    faphStartdate: Date = new Date(),
-    faphEnddate: Date = new Date(),
-    faphLowPrice: string,
-    faphHighPrice: string,
-    faphRatePrice: string,
-    faphDiscount: string,
-    faphTaxRate: string,
-    faphModifiedDate: Date = new Date(),
-    faphUser,
+    createFacilityPriceHistoryDto: createFacilityPriceHistoryDto,
   ) {
     try {
-      const facilityPriceHistory = await this.facilityPriceHistoryRepo.save({
-        faphFaci: faphFaci,
-        faphId: faphId,
-        faphStartdate: faphStartdate,
-        faphEnddate: faphEnddate,
-        faphLowPrice: faphLowPrice,
-        faphHighPrice: faphHighPrice,
-        faphRatePrice: faphRatePrice,
-        faphDiscount: faphDiscount,
-        faphTaxRate: faphTaxRate,
-        faphModifiedDate: faphModifiedDate,
-        faphUser: faphUser,
-      });
-      return facilityPriceHistory;
+      return await this.facilityPriceHistoryRepo.save(
+        createFacilityPriceHistoryDto,
+      );
     } catch (error) {
       return error.message;
     }
@@ -66,32 +43,19 @@ export class FacilityPriceHistoryService {
 
   public async Update(
     id: number,
-    faphLowPrice: string,
-    faphHighPrice: string,
-    faphRatePrice: string,
-    faphDiscount: string,
-    faphTaxRate: string,
-    faphModifiedDate: Date = new Date(),
+    updateFacilityPriceHistoryDto: updateFacilityPriceHistoryDto,
   ) {
     try {
-      const facilityPriceHistory = await this.facilityPriceHistoryRepo.update(
+      return await this.facilityPriceHistoryRepo.update(
         id,
-        {
-          faphLowPrice: faphLowPrice,
-          faphHighPrice: faphHighPrice,
-          faphRatePrice: faphRatePrice,
-          faphDiscount: faphDiscount,
-          faphTaxRate: faphTaxRate,
-          faphModifiedDate: faphModifiedDate,
-        },
+        updateFacilityPriceHistoryDto,
       );
-      return facilityPriceHistory;
     } catch (error) {
       return error.message;
     }
   }
 
-  public async Delete(id: string) {
+  public async Delete(id: number) {
     try {
       const facilityPriceHistory = await this.facilityPriceHistoryRepo.delete(
         id,
