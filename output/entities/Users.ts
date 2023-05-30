@@ -5,66 +5,66 @@ import {
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
-} from "typeorm";
-import { BookingOrders } from "./BookingOrders";
-import { Employee } from "./Employee";
-import { FacilityPriceHistory } from "./FacilityPriceHistory";
-import { HotelReviews } from "./HotelReviews";
-import { OrderMenus } from "./OrderMenus";
-import { PaymentTransaction } from "./PaymentTransaction";
-import { UserAccounts } from "./UserAccounts";
-import { UserBonusPoints } from "./UserBonusPoints";
-import { UserMembers } from "./UserMembers";
-import { UserPassword } from "./UserPassword";
-import { UserProfiles } from "./UserProfiles";
-import { UserRoles } from "./UserRoles";
-import { WorkOrders } from "./WorkOrders";
+} from 'typeorm';
+import { BookingOrders } from './BookingOrders';
+import { Employee } from './Employee';
+import { FacilityPriceHistory } from './FacilityPriceHistory';
+import { HotelReviews } from './HotelReviews';
+import { OrderMenus } from './OrderMenus';
+import { PaymentTransaction } from './PaymentTransaction';
+import { UserAccounts } from './UserAccounts';
+import { UserBonusPoints } from './UserBonusPoints';
+import { UserMembers } from './UserMembers';
+import { UserPassword } from './UserPassword';
+import { UserProfiles } from './UserProfiles';
+import { UserRoles } from './UserRoles';
+import { WorkOrders } from './WorkOrders';
 
-@Index("users_user_email_key", ["userEmail"], { unique: true })
-@Index("user_id_pk", ["userId"], { unique: true })
-@Entity("users", { schema: "users" })
+@Index('users_user_email_key', ['userEmail'], { unique: true })
+@Index('user_id_pk', ['userId'], { unique: true })
+@Entity('users', { schema: 'users' })
 export class Users {
-  @PrimaryGeneratedColumn({ type: "integer", name: "user_id" })
+  @PrimaryGeneratedColumn({ type: 'integer', name: 'user_id' })
   userId: number;
 
-  @Column("character varying", {
-    name: "user_full_name",
+  @Column('character varying', {
+    name: 'user_full_name',
     nullable: true,
     length: 55,
   })
   userFullName: string | null;
 
-  @Column("character varying", {
-    name: "user_type",
+  @Column('character varying', {
+    name: 'user_type',
     nullable: true,
     length: 15,
   })
   userType: string | null;
 
-  @Column("character varying", {
-    name: "user_company_name",
+  @Column('character varying', {
+    name: 'user_company_name',
     nullable: true,
     length: 255,
   })
   userCompanyName: string | null;
 
-  @Column("character varying", {
-    name: "user_email",
+  @Column('character varying', {
+    name: 'user_email',
     nullable: true,
     unique: true,
     length: 255,
   })
   userEmail: string | null;
 
-  @Column("character varying", {
-    name: "user_phone_number",
+  @Column('character varying', {
+    name: 'user_phone_number',
     nullable: true,
     length: 25,
   })
   userPhoneNumber: string | null;
 
-  @Column("timestamp without time zone", {
-    name: "user_modified_date",
+  @Column('timestamp without time zone', {
+    name: 'user_modified_date',
     nullable: true,
   })
   userModifiedDate: Date | null;
@@ -77,7 +77,7 @@ export class Users {
 
   @OneToMany(
     () => FacilityPriceHistory,
-    (facilityPriceHistory) => facilityPriceHistory.faphUser
+    (facilityPriceHistory) => facilityPriceHistory.faphUser,
   )
   facilityPriceHistories: FacilityPriceHistory[];
 
@@ -89,7 +89,7 @@ export class Users {
 
   @OneToMany(
     () => PaymentTransaction,
-    (paymentTransaction) => paymentTransaction.patrUser
+    (paymentTransaction) => paymentTransaction.patrUser,
   )
   paymentTransactions: PaymentTransaction[];
 
@@ -98,7 +98,7 @@ export class Users {
 
   @OneToMany(
     () => UserBonusPoints,
-    (userBonusPoints) => userBonusPoints.ubpoUser
+    (userBonusPoints) => userBonusPoints.ubpoUser,
   )
   userBonusPoints: UserBonusPoints[];
 

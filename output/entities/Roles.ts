@@ -4,17 +4,17 @@ import {
   Index,
   OneToMany,
   PrimaryGeneratedColumn,
-} from "typeorm";
-import { UserRoles } from "./UserRoles";
+} from 'typeorm';
+import { UserRoles } from './UserRoles';
 
-@Index("role_id_pk", ["roleId"], { unique: true })
-@Entity("roles", { schema: "users" })
+@Index('role_id_pk', ['roleId'], { unique: true })
+@Entity('roles', { schema: 'users' })
 export class Roles {
-  @PrimaryGeneratedColumn({ type: "integer", name: "role_id" })
+  @PrimaryGeneratedColumn({ type: 'integer', name: 'role_id' })
   roleId: number;
 
-  @Column("character varying", {
-    name: "role_name",
+  @Column('character varying', {
+    name: 'role_name',
     nullable: true,
     length: 35,
   })
