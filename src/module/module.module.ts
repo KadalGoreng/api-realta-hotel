@@ -90,6 +90,7 @@ import { AddressService } from 'src/master/address/address.service';
 import { CategoryGroupService } from 'src/master/category-group/category-group.service';
 import { OrderDetailService } from 'src/booking/order-detail/order-detail.service';
 import { OrderDetailController } from 'src/booking/order-detail/order-detail.controller';
+import { CategoryGroupController } from 'src/master/category-group/category-group.controller';
 
 @Module({
   imports: [
@@ -214,6 +215,7 @@ import { OrderDetailController } from 'src/booking/order-detail/order-detail.con
     HotelReviewController,
     FacilityPriceHistoryController,
     FacilityPhotoController,
+    CategoryGroupController,
     BookingOrderController,
     SpecialOfferController,
     RegionsController,
@@ -231,6 +233,7 @@ import { OrderDetailController } from 'src/booking/order-detail/order-detail.con
     FacilitiesService,
     HotelReviewsService,
     FacilityPriceHistoryService,
+    CategoryGroupService,
     FacilityPhotoService,
     BookingOrderService,
     SpecialOfferService,
