@@ -33,7 +33,6 @@ import { PaymentTransactionController } from 'src/payment/paytransaction/paytran
 import { PaymentTransactionService } from 'src/payment/paytransaction/paytransaction.service';
 import { UserAccountController } from 'src/payment/useraccount/useraccount.controller';
 import { UserAccountService } from 'src/payment/useraccount/useraccount.service';
-import { Address } from 'output/entities/Address';
 import { Bank } from 'output/entities/Bank';
 import { BookingOrderDetail } from 'output/entities/BookingOrderDetail';
 import { BookingOrderDetailExtra } from 'output/entities/BookingOrderDetailExtra';
@@ -51,7 +50,6 @@ import { FacilityPriceHistory } from 'output/entities/FacilityPriceHistory';
 import { HotelReviews } from 'output/entities/HotelReviews';
 import { Hotels } from 'output/entities/Hotels';
 import { JobRole } from 'output/entities/JobRole';
-import { Members } from 'output/entities/Members';
 import { OrderMenuDetail } from 'output/entities/OrderMenuDetail';
 import { OrderMenus } from 'output/entities/OrderMenus';
 import { PaymentGateway } from 'output/entities/PaymentGateway';
@@ -65,7 +63,6 @@ import { PurchaseOrderHeader } from 'output/entities/PurchaseOrderHeader';
 import { Regions } from 'output/entities/Regions';
 import { RestoMenuPhotos } from 'output/entities/RestoMenuPhotos';
 import { RestoMenus } from 'output/entities/RestoMenus';
-import { Roles } from 'output/entities/Roles';
 import { ServiceTask } from 'output/entities/ServiceTask';
 import { Shift } from 'output/entities/Shift';
 import { SpecialOfferCoupons } from 'output/entities/SpecialOfferCoupons';
@@ -74,13 +71,7 @@ import { StockDetail } from 'output/entities/StockDetail';
 import { StockPhoto } from 'output/entities/StockPhoto';
 import { Stocks } from 'output/entities/Stocks';
 import { UserAccounts } from 'output/entities/UserAccounts';
-import { UserBonusPoints } from 'output/entities/UserBonusPoints';
 import { UserBreakfeast } from 'output/entities/UserBreakfeast';
-import { UserMembers } from 'output/entities/UserMembers';
-import { UserPassword } from 'output/entities/UserPassword';
-import { UserProfiles } from 'output/entities/UserProfiles';
-import { UserRoles } from 'output/entities/UserRoles';
-import { Users } from 'output/entities/Users';
 import { Vendor } from 'output/entities/Vendor';
 import { VendorProduct } from 'output/entities/VendorProduct';
 import { WorkOrderDetail } from 'output/entities/WorkOrderDetail';
@@ -120,6 +111,11 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { LocalGuard } from 'src/auth/local.strategy';
 import { JwtGuard } from 'src/auth/jwt.strategy';
+import { CountryController } from 'src/master/country/country.controller';
+import { CountryService } from 'src/master/country/country.service';
+import { ProvincesService } from 'src/master/province/province.service';
+import { ProvincesController } from 'src/master/province/province.controller';
+import { AddressController } from 'src/master/address/address.controller';
 
 @Module({
   imports: [
@@ -241,9 +237,21 @@ import { JwtGuard } from 'src/auth/jwt.strategy';
       WorkOrderDetail,
       WorkOrders,
     ]),
+    PassportModule,
+    JwtModule.register({
+      secret: 'secretKey',
+      signOptions: { expiresIn: '2d' },
+    }),
     MulterModule.register(ConfigMulter.Uploadfiles()),
   ],
   controllers: [
+    UserProfilesController,
+    UserMembersController,
+    UserPasswordController,
+    UserBonusPointsController,
+    UserRolesController,
+    UsersController,
+    RolesController,
     BankController,
     PaymentGatewayController,
     PaymentTransactionController,
@@ -257,6 +265,9 @@ import { JwtGuard } from 'src/auth/jwt.strategy';
     BookingOrderController,
     SpecialOfferController,
     RegionsController,
+    CountryController,
+    ProvincesController,
+    AddressController,
     PolicyController,
     PriceItemsController,
     OrderDetailExtraController,
@@ -286,6 +297,9 @@ import { JwtGuard } from 'src/auth/jwt.strategy';
     BookingOrderService,
     SpecialOfferService,
     RegionsService,
+    CountryService,
+    ProvincesService,
+    AddressService,
     PolicyService,
     PriceItemsService,
     OrderDetailExtraService,

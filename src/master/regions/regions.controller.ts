@@ -23,12 +23,15 @@ export class RegionsController {
   }
 
   @Post()
-  public async create(@Body() regionName: string) {
+  public async create(@Body('regionName') regionName: string) {
     return await this.Services.create(regionName);
   }
 
   @Put(':id')
-  public async update(@Param('id') id: number, @Body() regionName: string) {
+  public async update(
+    @Param('id') id: number,
+    @Body('regionName') regionName: string,
+  ) {
     return await this.Services.update(id, regionName);
   }
 

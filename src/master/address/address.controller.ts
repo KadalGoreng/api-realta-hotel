@@ -1,5 +1,14 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { AddressService } from './address.service';
+import { CreateAddressDto } from './address.dto';
 
 @Controller('address')
 export class AddressController {
@@ -10,6 +19,25 @@ export class AddressController {
   }
   @Get(':id')
   public async getOne(@Param('id') id: number) {
-    return await this.ServicesAddress.findOne(id);
+    return await this.ServicesAddress.findByProvince(id);
+  }
+  @Post()
+  public async create(
+    @Body()
+    masterDetail: CreateAddressDto,
+  ) {
+    return await this.ServicesAddress.create(masterDetail);
+  }
+  @Put(':id')
+  public async update(
+    @Param('id') id: number,
+    @Body()
+    masterDetail: CreateAddressDto,
+  ) {
+    return await this.ServicesAddress.update(id, masterDetail);
+  }
+  @Delete(':id')
+  public async delete(@Param('id') id: number) {
+    return await this.ServicesAddress.delete(id);
   }
 }

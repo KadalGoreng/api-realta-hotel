@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Address } from 'output/entities/Address';
 import { Repository } from 'typeorm';
+import { CreateAddressDto } from './address.dto';
 
 @Injectable()
 export class AddressService {
@@ -11,13 +12,45 @@ export class AddressService {
   ) {}
 
   public async findAll() {
-    return await this.addressRepo.find();
+    return await this.addressRepo.find({ relations: { addrProv: true } });
   }
 
-  public async findOne(id: number) {
-    return await this.addressRepo.findOne({
-      where: { addrId: id },
-      relations: { addrProv: { provCountry: { countryRegion: true } } },
+  public async findByProvince(id: number) {
+    return await this.addressRepo.find({
+      where: { addrProv: { provId: id } },
+      relations: { addrProv: true },
+      order: { addrId: 1 },
     });
+  }
+
+  public async create(masterDetail: CreateAddressDto) {
+    try {
+      const master = await this.addressRepo.save({
+        ...masterDetail,
+      });
+      return master;
+    } catch (error) {
+      return error.message;
+    }
+  }
+
+  public async update(id: number, masterDetail: CreateAddressDto) {
+    try {
+      const master = await this.addressRepo.update(id, {
+        ...masterDetail,
+      });
+      return master;
+    } catch (error) {
+      return error.message;
+    }
+  }
+
+  public async delete(id: number) {
+    try {
+      const master = await this.addressRepo.delete(id);
+      return master;
+    } catch (error) {
+      return error.message;
+    }
   }
 }
