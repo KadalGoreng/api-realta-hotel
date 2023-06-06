@@ -34,11 +34,12 @@ export class OrderMenusController {
   }
 
   @Post()
-  createOrderMenus(@Body() body) {
-    const result = this.orderMenusService.createOrderMenus(body);
+  async createOrderMenus(@Body() body) {
+    const result = await this.orderMenusService.createOrderMenus(body);
     // console.log(result);
     if (result) {
       console.log('Data Berhasil order Menus');
+      return result;
     } else {
       console.log('GAGAL');
     }

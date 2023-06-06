@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, FindOneOptions } from 'typeorm';
+import { Repository, FindOneOptions, ILike } from 'typeorm';
 import { RestoMenus } from '../../output/entities/RestoMenus';
 
 @Injectable()
@@ -11,7 +11,15 @@ export class RestoMenusService {
   ) {}
 
   async findAll(): Promise<RestoMenus[]> {
-    return this.restoMenusRepository.find();
+    return this.restoMenusRepository.find({
+      order: { remeId: 'ASC' },
+    });
+  }
+
+  async findMany(pattern: any): Promise<RestoMenus[]> {
+    return await this.restoMenusRepository.find({
+      where: { remeName: ILike(`%${pattern}%`) },
+    });
   }
 
   async findOne(id: string) {
@@ -30,6 +38,7 @@ export class RestoMenusService {
       remeName: restoMenu.remeName,
       remeDescription: restoMenu.remeDescription,
       remePrice: restoMenu.remePrice,
+      remeType: restoMenu.remeType,
       remeStatus: restoMenu.remeStatus,
       remeModifiedDate: new Date(),
     });

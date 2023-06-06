@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { RestoMenusService } from './resto-menus.service';
 import { RestoMenus } from '../../output/entities/RestoMenus';
 
@@ -9,6 +9,11 @@ export class RestoMenusController {
   @Get()
   async findAll(): Promise<RestoMenus[]> {
     return this.restoMenusService.findAll();
+  }
+
+  @Get('/search')
+  async findMany(@Query('name') search: string) {
+    return await this.restoMenusService.findMany(search);
   }
 
   @Get(':id')

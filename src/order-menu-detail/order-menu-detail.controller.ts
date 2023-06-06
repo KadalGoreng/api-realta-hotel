@@ -26,14 +26,8 @@ export class OrderMenuDetailController {
   }
 
   @Post()
-  createOrderMenuDetail(@Body() body) {
-    const result = this.orderMenuDetailService.createOrderMenusDetail(body);
-    // console.log(result);
-    if (result) {
-      console.log('Data Berhasil ditambahkan');
-    } else {
-      console.log('GAGAL');
-    }
+  async createOrderMenuDetail(@Body() body): Promise<any> {
+    return await this.orderMenuDetailService.createOrderMenusDetail(body);
   }
 
   @Put(':id')
