@@ -22,7 +22,14 @@ let RestoMenusService = class RestoMenusService {
         this.restoMenusRepository = restoMenusRepository;
     }
     async findAll() {
-        return this.restoMenusRepository.find();
+        return this.restoMenusRepository.find({
+            order: { remeId: 'ASC' },
+        });
+    }
+    async findMany(pattern) {
+        return await this.restoMenusRepository.find({
+            where: { remeName: (0, typeorm_2.ILike)(`%${pattern}%`) },
+        });
     }
     async findOne(id) {
         const findOneOptions = {
@@ -38,6 +45,7 @@ let RestoMenusService = class RestoMenusService {
             remeName: restoMenu.remeName,
             remeDescription: restoMenu.remeDescription,
             remePrice: restoMenu.remePrice,
+            remeType: restoMenu.remeType,
             remeStatus: restoMenu.remeStatus,
             remeModifiedDate: new Date(),
         });

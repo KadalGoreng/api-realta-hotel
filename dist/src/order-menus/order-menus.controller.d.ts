@@ -6,7 +6,7 @@ export declare class OrderMenusController {
     getIdLast(): Promise<any>;
     findAllOrderMenus(): Promise<any>;
     findOneOrderMenus(Params: any): Promise<any>;
-    createOrderMenus(body: any): void;
+    createOrderMenus(body: any): Promise<any>;
     updateOrderMenus(params: any, body: any): any;
     deleteOrderMenus(params: any): any;
 }

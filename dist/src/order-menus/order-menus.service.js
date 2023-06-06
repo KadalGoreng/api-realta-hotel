@@ -17,37 +17,81 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const OrderMenus_1 = require("../../output/entities/OrderMenus");
 const typeorm_2 = require("typeorm");
+const OrderMenuDetail_1 = require("../../output/entities/OrderMenuDetail");
 let OrderMenusService = class OrderMenusService {
-    constructor(orderMenusRepository) {
+    constructor(orderMenusRepository, orderMenuDetailRepository) {
         this.orderMenusRepository = orderMenusRepository;
+        this.orderMenuDetailRepository = orderMenuDetailRepository;
     }
     async findAllOrderMenus() {
         return await this.orderMenusRepository.find();
     }
     async findOneOrderMenus(orme_id) {
-        const result = await this.orderMenusRepository.findOne({
+        const order_menu = await this.orderMenusRepository.findOne({
             where: {
                 ormeId: orme_id,
             },
         });
+        const order_menu_detail = await this.orderMenuDetailRepository
+            .createQueryBuilder('order_menu_detail')
+            .leftJoinAndSelect('order_menu_detail.omdeReme', 'resto_menus')
+            .where('order_menu_detail.omde_orme_id = :prefix', {
+            prefix: order_menu.ormeId,
+        })
+            .getMany();
+        const result = { order_menu, order_menu_detail };
         if (result) {
             return result;
         }
-        throw new common_1.HttpException('Categori not Found', common_1.HttpStatus.NOT_FOUND);
+        throw new common_1.HttpException('Not Found', common_1.HttpStatus.NOT_FOUND);
+    }
+    async generateUniqueOrderNumber() {
+        const currentDate = new Date();
+        const year = currentDate.getFullYear().toString().substr(-2);
+        const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+        const day = currentDate.getDate().toString().padStart(2, '0');
+        const orderNumberPrefix = `FO-${year}${month}${day}`;
+        const latestOrderNumber = await this.orderMenusRepository
+            .createQueryBuilder('order_menus')
+            .select('MAX(order_menus.ormeOrderNumber)', 'maxOrderNumber')
+            .where('order_menus.ormeOrderNumber LIKE :prefix', {
+            prefix: `${orderNumberPrefix}%`,
+        })
+            .getRawOne();
+        let orderNumberCounter = 1;
+        if (latestOrderNumber && latestOrderNumber.maxOrderNumber) {
+            const latestCounter = parseInt(latestOrderNumber.maxOrderNumber.substr(-3), 10);
+            if (!isNaN(latestCounter)) {
+                orderNumberCounter = latestCounter + 1;
+            }
+        }
+        const paddedCounter = orderNumberCounter.toString().padStart(3, '0');
+        const uniqueOrderNumber = `${orderNumberPrefix}-${paddedCounter}`;
+        return uniqueOrderNumber;
     }
     async createOrderMenus(data) {
+        const orderNumber = await this.generateUniqueOrderNumber();
+        const orderTotalAmount = await this.orderMenuDetailRepository.findOneBy({
+            omdeId: data.orderDetails[0],
+        });
         const date = new Date();
         const result = await this.orderMenusRepository.save({
-            ormeOrderNumber: data.ormeOrderNumber,
-            ormeOrderDate: data.ormeOrderDate,
+            ormeOrderNumber: orderNumber,
+            ormeOrderDate: date,
             ormeTotalItem: data.ormeTotalItem,
             ormeTotalDiscount: data.ormeTotalDiscount,
-            ormeTotalAmount: data.ormeTotalAmount,
+            ormeTotalAmount: orderTotalAmount.ormeSubtotal,
             ormePayType: data.ormePayType,
             ormeCardnumber: data.ormeCardnumber,
             ormeIsPaid: data.ormeIsPaid,
             ormeModifiedDate: date,
             ormeUser: data.ormeUserId,
+        });
+        const ormeId = result.ormeId;
+        data.orderDetails.forEach(async (element) => {
+            await this.orderMenuDetailRepository.update({ omdeId: element }, {
+                omdeOrme: ormeId,
+            });
         });
         return result;
     }
@@ -63,7 +107,7 @@ let OrderMenusService = class OrderMenusService {
             ormeTotalAmount: data.ormeTotalAmount,
             ormePayType: data.ormePayType,
             ormeCardnumber: data.ormeCardnumber,
-            ormeIsPaid: data.ormeIsPaid,
+            ormeIsPaid: 'Y',
             ormeModifiedDate: date,
             ormeUserId: data.ormeUserId,
         });
@@ -85,7 +129,9 @@ let OrderMenusService = class OrderMenusService {
 OrderMenusService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(OrderMenus_1.OrderMenus)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __param(1, (0, typeorm_1.InjectRepository)(OrderMenuDetail_1.OrderMenuDetail)),
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository])
 ], OrderMenusService);
 exports.OrderMenusService = OrderMenusService;
 //# sourceMappingURL=order-menus.service.js.map

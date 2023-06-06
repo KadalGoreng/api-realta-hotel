@@ -15,32 +15,32 @@ const RestoMenus_1 = require("./RestoMenus");
 let RestoMenuPhotos = class RestoMenuPhotos {
 };
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)({ type: "integer", name: "remp_id" }),
+    (0, typeorm_1.PrimaryGeneratedColumn)({ type: 'integer', name: 'remp_id' }),
     __metadata("design:type", Number)
 ], RestoMenuPhotos.prototype, "rempId", void 0);
 __decorate([
-    (0, typeorm_1.Column)("character varying", {
-        name: "remp_thumbnail_filename",
+    (0, typeorm_1.Column)('character varying', {
+        name: 'remp_thumbnail_filename',
         nullable: true,
         length: 50,
     }),
     __metadata("design:type", String)
 ], RestoMenuPhotos.prototype, "rempThumbnailFilename", void 0);
 __decorate([
-    (0, typeorm_1.Column)("character varying", {
-        name: "remp_photo_filename",
+    (0, typeorm_1.Column)('character varying', {
+        name: 'remp_photo_filename',
         nullable: true,
         length: 50,
     }),
     __metadata("design:type", String)
 ], RestoMenuPhotos.prototype, "rempPhotoFilename", void 0);
 __decorate([
-    (0, typeorm_1.Column)("bit", { name: "remp_primary", nullable: true }),
+    (0, typeorm_1.Column)('bit', { name: 'remp_primary', nullable: true }),
     __metadata("design:type", String)
 ], RestoMenuPhotos.prototype, "rempPrimary", void 0);
 __decorate([
-    (0, typeorm_1.Column)("character varying", {
-        name: "remp_url",
+    (0, typeorm_1.Column)('character varying', {
+        name: 'remp_url',
         nullable: true,
         length: 255,
     }),
@@ -48,12 +48,11 @@ __decorate([
 ], RestoMenuPhotos.prototype, "rempUrl", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => RestoMenus_1.RestoMenus, (restoMenus) => restoMenus.restoMenuPhotos),
-    (0, typeorm_1.JoinColumn)([{ name: "remp_reme_id", referencedColumnName: "remeId" }]),
+    (0, typeorm_1.JoinColumn)([{ name: 'remp_reme_id', referencedColumnName: 'remeId' }]),
     __metadata("design:type", RestoMenus_1.RestoMenus)
 ], RestoMenuPhotos.prototype, "rempReme", void 0);
 RestoMenuPhotos = __decorate([
-    (0, typeorm_1.Index)("pk_remp_id", ["rempId"], { unique: true }),
-    (0, typeorm_1.Entity)("resto_menu_photos", { schema: "resto" })
+    (0, typeorm_1.Entity)('resto_menu_photos', { schema: 'resto' })
 ], RestoMenuPhotos);
 exports.RestoMenuPhotos = RestoMenuPhotos;
 //# sourceMappingURL=RestoMenuPhotos.js.map

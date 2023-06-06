@@ -46,7 +46,7 @@ __decorate([
     __metadata("design:type", String)
 ], OrderMenus.prototype, "ormeTotalAmount", void 0);
 __decorate([
-    (0, typeorm_1.Column)('character', { name: 'orme_pay_type', nullable: true, length: 2 }),
+    (0, typeorm_1.Column)('character', { name: 'orme_pay_type', nullable: true, length: 100 }),
     __metadata("design:type", String)
 ], OrderMenus.prototype, "ormePayType", void 0);
 __decorate([
@@ -77,7 +77,6 @@ __decorate([
     __metadata("design:type", Array)
 ], OrderMenus.prototype, "orderMenuDetails", void 0);
 OrderMenus = __decorate([
-    (0, typeorm_1.Index)('pk_orme_id', ['ormeId'], { unique: true }),
     (0, typeorm_1.Entity)('order_menus', { schema: 'resto' })
 ], OrderMenus);
 exports.OrderMenus = OrderMenus;

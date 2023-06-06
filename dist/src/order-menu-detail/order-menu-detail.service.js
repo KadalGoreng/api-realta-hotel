@@ -36,14 +36,21 @@ let OrderMenuDetailService = class OrderMenuDetailService {
         throw new common_1.HttpException('Categori not Found', common_1.HttpStatus.NOT_FOUND);
     }
     async createOrderMenusDetail(data) {
-        const result = await this.orderMenuDetailRepository.save({
-            ormePrice: data.ormePrice,
-            ormeQty: data.ormeQty,
-            ormeSubtotal: data.ormeSubtotal,
-            ormeDiscount: data.ormeDiscount,
-            omdeOrme: data.omdeOrme,
-            omdeReme: data.omdeReme,
-        });
+        const dataArray = Object.keys(data)
+            .filter((key) => key !== 'subtotal')
+            .map((key) => data[key]);
+        const subtotal = data['subtotal'];
+        const result = await Promise.all(dataArray.map(async (restoMenuDto, index) => {
+            if (index.toString() !== 'subtotal') {
+                const orderMenuDetail = new OrderMenuDetail_1.OrderMenuDetail();
+                orderMenuDetail.ormePrice = restoMenuDto.remePrice;
+                orderMenuDetail.ormeQty = restoMenuDto.quantity;
+                orderMenuDetail.ormeSubtotal = subtotal;
+                orderMenuDetail.ormeDiscount = '0';
+                orderMenuDetail.omdeReme = restoMenuDto.remeId;
+                return this.orderMenuDetailRepository.save(orderMenuDetail);
+            }
+        }));
         return result;
     }
     async updateOrdeMenuDetail(id, data) {

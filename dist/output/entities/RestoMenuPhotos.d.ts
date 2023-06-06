@@ -1,4 +1,4 @@
-import { RestoMenus } from "./RestoMenus";
+import { RestoMenus } from './RestoMenus';
 export declare class RestoMenuPhotos {
     rempId: number;
     rempThumbnailFilename: string | null;

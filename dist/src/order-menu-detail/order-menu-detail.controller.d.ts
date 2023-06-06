@@ -4,7 +4,7 @@ export declare class OrderMenuDetailController {
     constructor(orderMenuDetailService: OrderMenuDetailService);
     findAllOrderMenuDetail(): Promise<any>;
     findOneOrderMenuDetail(params: any): Promise<any>;
-    createOrderMenuDetail(body: any): void;
+    createOrderMenuDetail(body: any): Promise<any>;
     updateOrderMenuDetail(params: any, body: any): any;
     deleteOrderMenuDetail(params: any): any;
 }

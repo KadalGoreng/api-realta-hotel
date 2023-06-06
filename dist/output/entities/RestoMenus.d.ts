@@ -7,6 +7,7 @@ export declare class RestoMenus {
     remeDescription: string | null;
     remePrice: string | null;
     remeStatus: string | null;
+    remeType: string | null;
     remeModifiedDate: Date | null;
     orderMenuDetails: OrderMenuDetail[];
     restoMenuPhotos: RestoMenuPhotos[];

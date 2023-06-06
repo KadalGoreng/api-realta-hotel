@@ -38,7 +38,7 @@ __decorate([
 __decorate([
     (0, typeorm_1.ManyToOne)(() => OrderMenus_1.OrderMenus, (orderMenus) => orderMenus.orderMenuDetails),
     (0, typeorm_1.JoinColumn)([{ name: 'omde_orme_id', referencedColumnName: 'ormeId' }]),
-    __metadata("design:type", OrderMenus_1.OrderMenus)
+    __metadata("design:type", Number)
 ], OrderMenuDetail.prototype, "omdeOrme", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => RestoMenus_1.RestoMenus, (restoMenus) => restoMenus.orderMenuDetails, {
@@ -46,10 +46,9 @@ __decorate([
         onUpdate: 'CASCADE',
     }),
     (0, typeorm_1.JoinColumn)([{ name: 'omde_reme_id', referencedColumnName: 'remeId' }]),
-    __metadata("design:type", RestoMenus_1.RestoMenus)
+    __metadata("design:type", Number)
 ], OrderMenuDetail.prototype, "omdeReme", void 0);
 OrderMenuDetail = __decorate([
-    (0, typeorm_1.Index)('pk_omde_id', ['omdeId'], { unique: true }),
     (0, typeorm_1.Entity)('order_menu_detail', { schema: 'resto' })
 ], OrderMenuDetail);
 exports.OrderMenuDetail = OrderMenuDetail;

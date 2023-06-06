@@ -23,6 +23,9 @@ let RestoMenusController = class RestoMenusController {
     async findAll() {
         return this.restoMenusService.findAll();
     }
+    async findMany(search) {
+        return await this.restoMenusService.findMany(search);
+    }
     async findOne(id) {
         return this.restoMenusService.findOne(id);
     }
@@ -39,6 +42,13 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], RestoMenusController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)('/search'),
+    __param(0, (0, common_1.Query)('name')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], RestoMenusController.prototype, "findMany", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),

@@ -25,14 +25,8 @@ let OrderMenuDetailController = class OrderMenuDetailController {
     findOneOrderMenuDetail(params) {
         return this.orderMenuDetailService.findOneOrderMenuDetail(params.id);
     }
-    createOrderMenuDetail(body) {
-        const result = this.orderMenuDetailService.createOrderMenusDetail(body);
-        if (result) {
-            console.log('Data Berhasil ditambahkan');
-        }
-        else {
-            console.log('GAGAL');
-        }
+    async createOrderMenuDetail(body) {
+        return await this.orderMenuDetailService.createOrderMenusDetail(body);
     }
     updateOrderMenuDetail(params, body) {
         return this.orderMenuDetailService.updateOrdeMenuDetail(params.id, body);
@@ -59,7 +53,7 @@ __decorate([
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], OrderMenuDetailController.prototype, "createOrderMenuDetail", null);
 __decorate([
     (0, common_1.Put)(':id'),

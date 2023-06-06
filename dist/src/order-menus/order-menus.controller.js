@@ -31,10 +31,11 @@ let OrderMenusController = class OrderMenusController {
     findOneOrderMenus(Params) {
         return this.orderMenusService.findOneOrderMenus(Params.id);
     }
-    createOrderMenus(body) {
-        const result = this.orderMenusService.createOrderMenus(body);
+    async createOrderMenus(body) {
+        const result = await this.orderMenusService.createOrderMenus(body);
         if (result) {
             console.log('Data Berhasil order Menus');
+            return result;
         }
         else {
             console.log('GAGAL');
@@ -77,7 +78,7 @@ __decorate([
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], OrderMenusController.prototype, "createOrderMenus", null);
 __decorate([
     (0, common_1.Put)(':id'),

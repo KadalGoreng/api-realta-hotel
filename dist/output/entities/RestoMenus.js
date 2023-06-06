@@ -52,6 +52,13 @@ __decorate([
     __metadata("design:type", String)
 ], RestoMenus.prototype, "remeStatus", void 0);
 __decorate([
+    (0, typeorm_1.Column)('character varying', {
+        name: 'reme_type',
+        nullable: true,
+    }),
+    __metadata("design:type", String)
+], RestoMenus.prototype, "remeType", void 0);
+__decorate([
     (0, typeorm_1.Column)('timestamp without time zone', {
         name: 'reme_modified_date',
         nullable: true,
@@ -67,7 +74,6 @@ __decorate([
     __metadata("design:type", Array)
 ], RestoMenus.prototype, "restoMenuPhotos", void 0);
 RestoMenus = __decorate([
-    (0, typeorm_1.Index)('pk_resto_menus', ['remeId'], { unique: true }),
     (0, typeorm_1.Entity)('resto_menus', { schema: 'resto' })
 ], RestoMenus);
 exports.RestoMenus = RestoMenus;
