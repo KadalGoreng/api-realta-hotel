@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 import { OrderMenuDetail } from './OrderMenuDetail';
 
-@Index('pk_orme_id', ['ormeId'], { unique: true })
+// @Index('pk_orme_id', ['ormeId'], { unique: true })
 @Entity('order_menus', { schema: 'resto' })
 export class OrderMenus {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'orme_id' })
@@ -35,7 +35,7 @@ export class OrderMenus {
   @Column('money', { name: 'orme_total_amount', nullable: true })
   ormeTotalAmount: string | null;
 
-  @Column('character', { name: 'orme_pay_type', nullable: true, length: 2 })
+  @Column('character', { name: 'orme_pay_type', nullable: true, length: 100 })
   ormePayType: string | null;
 
   @Column('character varying', {

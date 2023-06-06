@@ -8,7 +8,7 @@ import {
 import { OrderMenuDetail } from './OrderMenuDetail';
 import { RestoMenuPhotos } from './RestoMenuPhotos';
 
-@Index('pk_resto_menus', ['remeId'], { unique: true })
+// @Index('pk_resto_menus', ['remeId'], { unique: true })
 @Entity('resto_menus', { schema: 'resto' })
 export class RestoMenus {
   @Column('integer', { name: 'reme_faci_id', nullable: true })
@@ -40,6 +40,12 @@ export class RestoMenus {
     length: 15,
   })
   remeStatus: string | null;
+
+  @Column('character varying', {
+    name: 'reme_type',
+    nullable: true,
+  })
+  remeType: string | null;
 
   @Column('timestamp without time zone', {
     name: 'reme_modified_date',
