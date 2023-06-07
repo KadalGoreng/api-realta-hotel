@@ -26,9 +26,9 @@ export class CountryController {
   @Post()
   public async create(
     @Body()
-    countryDetail: CreateCountryDto,
+    createCountryDto: CreateCountryDto,
   ) {
-    return await this.Services.create(countryDetail);
+    return await this.Services.create(createCountryDto);
   }
   @Put(':id')
   public async update(

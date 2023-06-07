@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PriceItems } from 'output/entities/PriceItems';
-import { Repository } from 'typeorm';
-import { priceDto } from './price.dto';
+import { FindManyOptions, ILike, Repository } from 'typeorm';
+import { PaginationOptions, priceDto } from './price.dto';
 
 @Injectable()
 export class PriceItemsService {
@@ -11,8 +11,30 @@ export class PriceItemsService {
     private serviceRepo: Repository<PriceItems>,
   ) {}
 
-  public async findAll() {
-    return await this.serviceRepo.find({ order: { pritId: 1 } });
+  public async findAll(name?: string, options?: PaginationOptions) {
+    const query: FindManyOptions<PriceItems> = {
+      order: { pritId: 1 },
+      take: options?.limit,
+      skip: (options?.page - 1) * options?.limit,
+    };
+
+    if (name) {
+      query.where = {
+        pritName: ILike(`%${name}%`),
+      };
+    }
+
+    const [priceItems, total] = await this.serviceRepo.findAndCount(query);
+    const totalPages = Math.ceil(total / options.limit);
+
+    return {
+      data: priceItems,
+      total,
+      totalPages,
+      limit: options?.limit,
+      currentPage: Number(options.page),
+      perPage: options.limit,
+    };
   }
 
   public async findOne(id: number) {

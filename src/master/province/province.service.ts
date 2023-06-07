@@ -22,10 +22,10 @@ export class ProvincesService {
     });
   }
 
-  public async create(masterDetail: CreateProvinceDto) {
+  public async create(createProvinceDto: CreateProvinceDto) {
     try {
       const master = await this.serviceRepo.save({
-        ...masterDetail,
+        ...createProvinceDto,
       });
       return master;
     } catch (error) {
@@ -33,10 +33,10 @@ export class ProvincesService {
     }
   }
 
-  public async update(id: number, masterDetail: CreateProvinceDto) {
+  public async update(id: number, createProvinceDto: CreateProvinceDto) {
     try {
       const master = await this.serviceRepo.update(id, {
-        ...masterDetail,
+        ...createProvinceDto,
       });
       return master;
     } catch (error) {

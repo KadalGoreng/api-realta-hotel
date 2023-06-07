@@ -25,9 +25,9 @@ export class CountryService {
     });
   }
 
-  public async create(countryDetail: CreateCountryDto) {
+  public async create(createCountryDto: CreateCountryDto) {
     try {
-      const country = await this.serviceRepo.save(countryDetail);
+      const country = await this.serviceRepo.save(createCountryDto);
       return country;
     } catch (error) {
       return error.message;

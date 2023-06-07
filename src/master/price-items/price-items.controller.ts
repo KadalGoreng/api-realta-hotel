@@ -6,16 +6,26 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { PriceItemsService } from './price-items.service';
-import { priceDto } from './price.dto';
+import { PaginatedPrice, PaginationOptions, priceDto } from './price.dto';
 
 @Controller('price-items')
 export class PriceItemsController {
   constructor(private Services: PriceItemsService) {}
   @Get()
-  public async getAll() {
-    return await this.Services.findAll();
+  public async getAll(
+    @Query() query: PaginationOptions,
+  ): Promise<PaginatedPrice> {
+    const { name, page, limit } = query;
+
+    const options: PaginationOptions = {
+      page: page ? page : 1,
+      limit: limit ? limit : 10,
+    };
+
+    return await this.Services.findAll(name, options);
   }
 
   @Get(':id')

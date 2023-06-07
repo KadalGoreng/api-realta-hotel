@@ -24,17 +24,17 @@ export class AddressController {
   @Post()
   public async create(
     @Body()
-    masterDetail: CreateAddressDto,
+    createAddressDto: CreateAddressDto,
   ) {
-    return await this.ServicesAddress.create(masterDetail);
+    return await this.ServicesAddress.create(createAddressDto);
   }
   @Put(':id')
   public async update(
     @Param('id') id: number,
     @Body()
-    masterDetail: CreateAddressDto,
+    createAddressDto: CreateAddressDto,
   ) {
-    return await this.ServicesAddress.update(id, masterDetail);
+    return await this.ServicesAddress.update(id, createAddressDto);
   }
   @Delete(':id')
   public async delete(@Param('id') id: number) {

@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ServiceTask } from 'output/entities/ServiceTask';
-import { Repository } from 'typeorm';
-import { serviceDto } from './service-task.dto';
+import { FindManyOptions, Repository } from 'typeorm';
+import { PaginationOptions, serviceDto } from './service-task.dto';
 
 @Injectable()
 export class ServiceTaskService {
@@ -11,8 +11,24 @@ export class ServiceTaskService {
     private serviceRepo: Repository<ServiceTask>,
   ) {}
 
-  public async findAll() {
-    return await this.serviceRepo.find({ order: { setaId: 1 } });
+  public async findAll(options?: PaginationOptions) {
+    const query: FindManyOptions<ServiceTask> = {
+      order: { setaId: 1 },
+      take: options?.limit,
+      skip: (options?.page - 1) * options?.limit,
+    };
+
+    const [serviceTask, total] = await this.serviceRepo.findAndCount(query);
+    const totalPages = Math.ceil(total / options.limit);
+
+    return {
+      data: serviceTask,
+      total,
+      totalPages,
+      limit: options?.limit,
+      currentPage: Number(options.page),
+      perPage: options.limit,
+    };
   }
 
   public async findOne(id: number) {

@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Policy } from 'output/entities/Policy';
-import { Repository } from 'typeorm';
+import { FindManyOptions, Repository } from 'typeorm';
+import { PaginationOptions } from './policy.dto';
 
 @Injectable()
 export class PolicyService {
@@ -10,8 +11,23 @@ export class PolicyService {
     private serviceRepo: Repository<Policy>,
   ) {}
 
-  public async findAll() {
-    return await this.serviceRepo.find({ order: { poliId: 1 } });
+  public async findPaginate(options?: PaginationOptions) {
+    const query: FindManyOptions<Policy> = {
+      order: { poliId: 1 },
+      take: options?.limit,
+      skip: (options?.page - 1) * options?.limit,
+    };
+    const [policy, total] = await this.serviceRepo.findAndCount(query);
+    const totalPages = Math.ceil(total / options.limit);
+
+    return {
+      data: policy,
+      total,
+      totalPages,
+      limit: options?.limit,
+      currentPage: Number(options.page),
+      perPage: options.limit,
+    };
   }
 
   public async findOne(id: number) {

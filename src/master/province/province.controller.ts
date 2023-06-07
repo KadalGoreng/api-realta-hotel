@@ -24,17 +24,17 @@ export class ProvincesController {
   @Post()
   public async create(
     @Body()
-    masterDetail: CreateProvinceDto,
+    createProvinceDto: CreateProvinceDto,
   ) {
-    return await this.Services.create(masterDetail);
+    return await this.Services.create(createProvinceDto);
   }
   @Put(':id')
   public async update(
     @Param('id') id: number,
     @Body()
-    masterDetail: CreateProvinceDto,
+    createProvinceDto: CreateProvinceDto,
   ) {
-    return await this.Services.update(id, masterDetail);
+    return await this.Services.update(id, createProvinceDto);
   }
   @Delete(':id')
   public async delete(@Param('id') id: number) {

@@ -23,10 +23,10 @@ export class AddressService {
     });
   }
 
-  public async create(masterDetail: CreateAddressDto) {
+  public async create(createAddressDto: CreateAddressDto) {
     try {
       const master = await this.addressRepo.save({
-        ...masterDetail,
+        ...createAddressDto,
       });
       return master;
     } catch (error) {
@@ -34,10 +34,10 @@ export class AddressService {
     }
   }
 
-  public async update(id: number, masterDetail: CreateAddressDto) {
+  public async update(id: number, createAddressDto: CreateAddressDto) {
     try {
       const master = await this.addressRepo.update(id, {
-        ...masterDetail,
+        ...createAddressDto,
       });
       return master;
     } catch (error) {
