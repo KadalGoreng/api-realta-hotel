@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { HotelReviewsService } from './hotel-reviews.service';
 
@@ -14,8 +15,8 @@ export class HotelReviewController {
   constructor(private ServicesHotelReviews: HotelReviewsService) {}
 
   @Get()
-  public async getAll() {
-    return await this.ServicesHotelReviews.findAll();
+  public async getAll(@Query('hotelId') id: number) {
+    return await this.ServicesHotelReviews.findAll(id);
   }
 
   @Get('/:id')

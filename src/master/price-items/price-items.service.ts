@@ -12,7 +12,7 @@ export class PriceItemsService {
   ) {}
 
   public async findAll() {
-    return await this.serviceRepo.find();
+    return await this.serviceRepo.find({ order: { pritId: 1 } });
   }
 
   public async findOne(id: number) {
@@ -23,7 +23,22 @@ export class PriceItemsService {
 
   public async create(priceDto: priceDto) {
     try {
-      const master = await this.serviceRepo.save(priceDto);
+      const master = await this.serviceRepo.save({
+        ...priceDto,
+        pritModifiedDate: new Date(),
+      });
+      return master;
+    } catch (error) {
+      return error.message;
+    }
+  }
+
+  public async update(id: number, priceDto: priceDto) {
+    try {
+      const master = await this.serviceRepo.update(id, {
+        ...priceDto,
+        pritModifiedDate: new Date(),
+      });
       return master;
     } catch (error) {
       return error.message;

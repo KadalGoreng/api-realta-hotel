@@ -1,30 +1,30 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Policy } from 'output/entities/Policy';
+import { ServiceTask } from 'output/entities/ServiceTask';
 import { Repository } from 'typeorm';
+import { serviceDto } from './service-task.dto';
 
 @Injectable()
-export class PolicyService {
+export class ServiceTaskService {
   constructor(
-    @InjectRepository(Policy)
-    private serviceRepo: Repository<Policy>,
+    @InjectRepository(ServiceTask)
+    private serviceRepo: Repository<ServiceTask>,
   ) {}
 
   public async findAll() {
-    return await this.serviceRepo.find({ order: { poliId: 1 } });
+    return await this.serviceRepo.find({ order: { setaId: 1 } });
   }
 
   public async findOne(id: number) {
-    return await this.serviceRepo.find({
-      where: { policyCategoryGroups: { pocaCagro: { cagroId: id } } },
+    return await this.serviceRepo.findOne({
+      where: { setaId: id },
     });
   }
 
-  public async create(poliName: string, poliDescription: string) {
+  public async create(serviceDto: serviceDto) {
     try {
       const master = await this.serviceRepo.save({
-        poliName: poliName,
-        poliDescription: poliDescription,
+        ...serviceDto,
       });
       return master;
     } catch (error) {
@@ -32,11 +32,10 @@ export class PolicyService {
     }
   }
 
-  public async update(id: number, poliName: string, poliDescription: string) {
+  public async update(id: number, serviceDto: serviceDto) {
     try {
       const master = await this.serviceRepo.update(id, {
-        poliName: poliName,
-        poliDescription: poliDescription,
+        ...serviceDto,
       });
       return master;
     } catch (error) {

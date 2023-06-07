@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { PriceItemsService } from './price-items.service';
 import { priceDto } from './price.dto';
 
@@ -18,6 +26,11 @@ export class PriceItemsController {
   @Post()
   public async create(@Body() priceDto: priceDto) {
     return await this.Services.create(priceDto);
+  }
+
+  @Put(':id')
+  public async update(@Param('id') id: number, @Body() priceDto: priceDto) {
+    return await this.Services.update(id, priceDto);
   }
 
   @Delete(':id')

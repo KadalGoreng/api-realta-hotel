@@ -116,6 +116,8 @@ import { CountryService } from 'src/master/country/country.service';
 import { ProvincesService } from 'src/master/province/province.service';
 import { ProvincesController } from 'src/master/province/province.controller';
 import { AddressController } from 'src/master/address/address.controller';
+import { ServiceTaskController } from 'src/master/service-task/service-task.controller';
+import { ServiceTaskService } from 'src/master/service-task/service-task.service';
 
 @Module({
   imports: [
@@ -269,6 +271,7 @@ import { AddressController } from 'src/master/address/address.controller';
     ProvincesController,
     AddressController,
     PolicyController,
+    ServiceTaskController,
     PriceItemsController,
     OrderDetailExtraController,
     OrderDetailController,
@@ -301,6 +304,7 @@ import { AddressController } from 'src/master/address/address.controller';
     ProvincesService,
     AddressService,
     PolicyService,
+    ServiceTaskService,
     PriceItemsService,
     OrderDetailExtraService,
     AddressService,

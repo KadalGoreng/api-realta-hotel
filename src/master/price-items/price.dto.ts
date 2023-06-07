@@ -3,5 +3,4 @@ export class priceDto {
   pritPrice: string;
   pritDescription: string;
   pritType: string;
-  pritModifiedDate: Date = new Date();
 }

@@ -21,14 +21,17 @@ export class PolicyController {
     return await this.Services.findOne(id);
   }
   @Post()
-  public async create(@Body() poliName: string, poliDescription: string) {
+  public async create(
+    @Body('poliName') poliName: string,
+    @Body('poliDescription') poliDescription: string,
+  ) {
     return await this.Services.create(poliDescription, poliName);
   }
   @Put(':id')
   public async update(
     @Param('id') id: number,
-    @Body() poliName: string,
-    poliDescription: string,
+    @Body('poliName') poliName: string,
+    @Body('poliDescription') poliDescription: string,
   ) {
     return await this.Services.update(id, poliName, poliDescription);
   }

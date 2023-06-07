@@ -10,13 +10,25 @@ export class HotelReviewsService {
     private hotelReviewsRepo: Repository<HotelReviews>,
   ) {}
 
-  public async findAll() {
-    return await this.hotelReviewsRepo.find({
-      relations: {
-        horeHotel: true,
-        horeUser: true,
-      },
-    });
+  public async findAll(id: number) {
+    if (id !== undefined) {
+      return await this.hotelReviewsRepo.find({
+        where: {
+          horeHotel: { hotelId: id },
+        },
+        relations: {
+          horeHotel: true,
+          horeUser: true,
+        },
+      });
+    } else {
+      return await this.hotelReviewsRepo.find({
+        relations: {
+          horeHotel: true,
+          horeUser: true,
+        },
+      });
+    }
   }
 
   public async findOne(id: number) {
