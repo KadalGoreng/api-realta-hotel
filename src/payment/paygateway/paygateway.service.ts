@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PaymentGateway } from 'output/entities/PaymentGateway';
-import { Repository } from 'typeorm';
+import { Repository, ILike } from 'typeorm';
 import { Entitys } from 'output/entities/Entitys';
 
 @Injectable()
@@ -52,6 +52,17 @@ export class PaymentGatewayService {
     try {
       const paga = await this.pagaRepo.delete(id);
       return paga;
+    } catch (error) {
+      return error.message;
+    }
+  }
+
+  public async Search(keyword: string) {
+    try {
+      return await this.pagaRepo.findBy({
+        pagaName:
+          ILike(`%${keyword}%`) || ILike(`%${keyword}`) || ILike(`${keyword}%`),
+      });
     } catch (error) {
       return error.message;
     }

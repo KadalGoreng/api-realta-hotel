@@ -21,6 +21,13 @@ export class UserAccountService {
     });
   }
 
+  public async findByUser(id: number) {
+    return await this.useraccRepo.find({
+      where: { usacUserId: id },
+      relations: ['usacEntity', 'usacEntity.bank', 'usacEntity.paymentGateway'],
+    });
+  }
+
   public async findOne(id: string) {
     return await this.useraccRepo.findOne({
       where: { usacAccountNumber: id },
@@ -38,7 +45,7 @@ export class UserAccountService {
     usac_exp_year: number,
   ) {
     try {
-      const usac = await this.useraccRepo.save({
+      await this.useraccRepo.save({
         usacEntityId: usac_entityId,
         usacUserId: usacUs_id,
         usacAccountNumber: usacAccnumber,
@@ -48,7 +55,15 @@ export class UserAccountService {
         usacExpyear: usac_exp_year,
         usacModifiedDate: new Date(),
       });
-      return usac;
+
+      return await this.useraccRepo.findOne({
+        where: { usacUserId: usacUs_id },
+        relations: [
+          'usacEntity',
+          'usacEntity.bank',
+          'usacEntity.paymentGateway',
+        ],
+      });
     } catch (error) {
       return error.message;
     }

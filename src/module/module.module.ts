@@ -13,15 +13,6 @@ import { UserMembersService } from 'src/users/user-members/user-members.service'
 import { UserMembersController } from 'src/users/user-members/user-members.controller';
 import { UserProfilesService } from 'src/users/user-profiles/user-profiles.service';
 import { UserProfilesController } from 'src/users/user-profiles/user-profiles.controller';
-import { Roles } from 'output/entities/Roles';
-import { Members } from 'output/entities/Members';
-import { Users } from 'output/entities/Users';
-import { Address } from 'output/entities/Address';
-import { UserRoles } from 'output/entities/UserRoles';
-import { UserBonusPoints } from 'output/entities/UserBonusPoints';
-import { UserPassword } from 'output/entities/UserPassword';
-import { UserMembers } from 'output/entities/UserMembers';
-import { UserProfiles } from 'output/entities/UserProfiles';
 import { UserController } from 'src/users/user/user.controller';
 import { UserService } from 'src/users/user/user.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -118,6 +109,15 @@ import { ProvincesController } from 'src/master/province/province.controller';
 import { AddressController } from 'src/master/address/address.controller';
 import { ServiceTaskController } from 'src/master/service-task/service-task.controller';
 import { ServiceTaskService } from 'src/master/service-task/service-task.service';
+import { Roles } from 'output/entities/Roles';
+import { Members } from 'output/entities/Members';
+import { Users } from 'output/entities/Users';
+import { Address } from 'output/entities/Address';
+import { UserRoles } from 'output/entities/UserRoles';
+import { UserBonusPoints } from 'output/entities/UserBonusPoints';
+import { UserMembers } from 'output/entities/UserMembers';
+import { UserPassword } from 'output/entities/UserPassword';
+import { UserProfiles } from 'output/entities/UserProfiles';
 
 @Module({
   imports: [
@@ -239,6 +239,7 @@ import { ServiceTaskService } from 'src/master/service-task/service-task.service
       WorkOrderDetail,
       WorkOrders,
     ]),
+    MulterModule.register(ConfigMulter.Uploadfiles()),
     PassportModule,
     JwtModule.register({
       secret: 'secretKey',
@@ -277,14 +278,23 @@ import { ServiceTaskService } from 'src/master/service-task/service-task.service
     OrderDetailController,
   ],
   providers: [
+    BankService,
+    PaymentGatewayService,
+    PaymentTransactionService,
+    UserAccountService,
+    HotelsService,
+    FacilitiesService,
+    HotelReviewsService,
+    FacilityPriceHistoryService,
+    FacilityPhotoService,
     RolesService,
-    UsersService,
-    UserRolesService,
-    UserBonusPointsService,
-    UserPasswordService,
-    UserMembersService,
-    UserProfilesService,
     UserService,
+    UserBonusPointsService,
+    UserMembersService,
+    UserPasswordService,
+    UserProfilesService,
+    UserRolesService,
+    UsersService,
     LocalGuard,
     JwtGuard,
     BankService,

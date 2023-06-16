@@ -41,7 +41,6 @@ export class UserProfiles {
 
   @Column('character', { name: 'uspro_gender', nullable: true, length: 1 })
   usproGender: string | null;
-
   @ManyToOne(() => Address, (address) => address.userProfiles, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',

@@ -40,4 +40,8 @@ export class PaymentGatewayController {
   public async Delete(@Param('id') id: number) {
     return await this.paygatService.Delete(id);
   }
+  @Get('search/:keyword')
+  public async search(@Param('keyword') keyword: string) {
+    return await this.paygatService.Search(keyword);
+  }
 }

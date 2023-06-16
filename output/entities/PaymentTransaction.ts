@@ -69,6 +69,9 @@ export class PaymentTransaction {
   })
   patrTrxNumberRef: string | null;
 
+  @Column('numeric', { name: 'patr_user_id', nullable: true })
+  patrUserId: string | null;
+
   @ManyToOne(() => Users, (users) => users.paymentTransactions, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
