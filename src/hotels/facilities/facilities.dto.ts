@@ -1,35 +1,34 @@
 import { CategoryGroup } from 'output/entities/CategoryGroup';
 import { Hotels } from 'output/entities/Hotels';
 
-export class createFacilitiesDto {
+export class CreateFacilitiesDto {
   faciName: string;
   faciMaxNumber: number;
   faciMeasureUnit: string;
   faciRoomNumber: string;
-  faciStartdate: Date = new Date();
-  faciEnddate: Date = new Date();
+  faciStartdate: Date;
+  faciEnddate: Date;
   faciLowPrice: string;
   faciHighPrice: string;
   faciDiscount: string;
   faciTaxRate: string;
-  faciModifiedDate: Date = new Date();
   faciRatePrice: string;
   faciCagro: CategoryGroup;
   faciHotel: Hotels;
 }
 
-export class updateFacilitiesDto {
+export class UpdateFacilitiesDto {
+  id: number;
   faciName: string;
   faciMaxNumber: number;
   faciMeasureUnit: string;
   faciRoomNumber: string;
-  faciStartdate: Date = new Date();
-  faciEnddate: Date = new Date();
+  faciStartdate: Date;
+  faciEnddate: Date;
   faciLowPrice: string;
   faciHighPrice: string;
   faciDiscount: string;
   faciTaxRate: string;
-  faciModifiedDate: Date = new Date();
   faciCagro: CategoryGroup;
   faciHotel: Hotels;
 }

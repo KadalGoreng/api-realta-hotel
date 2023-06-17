@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Facilities } from 'output/entities/Facilities';
 import { Repository } from 'typeorm';
-import { createFacilitiesDto, updateFacilitiesDto } from './facilities.dto';
+import { CreateFacilitiesDto, UpdateFacilitiesDto } from './facilities.dto';
 import {
   IPaginationOptions,
   paginate,
@@ -33,7 +33,8 @@ export class FacilitiesService {
 
   // public async findAll() {
   //   return await this.facilitiesRepo.find({
-  //     relations: ['faciCagro', 'faciHotel', 'facilityPhotos'],
+  //     relations: { faciCagro: true, faciHotel: true, facilityPhotos: true },
+  //     order: { faciId: 'ASC' },
   //   });
   // }
 
@@ -51,25 +52,36 @@ export class FacilitiesService {
       where: {
         faciId: FaciId,
       },
-      relations: ['faciCagro', 'faciHotel'],
+      relations: {
+        faciCagro: true,
+        faciHotel: true,
+      },
     });
   }
 
-  public async Create(createFacilitiesDto: createFacilitiesDto) {
+  public async Create(createFacilitiesDto: CreateFacilitiesDto) {
     try {
-      return await this.facilitiesRepo.save(createFacilitiesDto);
+      await this.facilitiesRepo.save({
+        ...createFacilitiesDto,
+        faciModifiedDate: new Date(),
+      });
+      return 'Facilities Created successfully';
     } catch (error) {
       return error.message;
     }
   }
 
-  public async Update(id: number, updateFacilitiesDto: updateFacilitiesDto) {
+  public async Update(id: number, updateFacilitiesDto: UpdateFacilitiesDto) {
     try {
-      return await this.facilitiesRepo.update(id, updateFacilitiesDto);
+      return await this.facilitiesRepo.update(id, {
+        ...updateFacilitiesDto,
+        faciModifiedDate: new Date(),
+      });
     } catch (error) {
       return error.message;
     }
   }
+
   public async Delete(id: number) {
     try {
       const hotels = await this.facilitiesRepo.delete(id);

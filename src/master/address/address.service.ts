@@ -17,11 +17,7 @@ export class AddressService {
   public async findOne(id: number) {
     return await this.addressRepo.findOne({
       where: { addrId: id },
-      relations: [
-        'addrProv',
-        'addrProv.provCountry',
-        'addrProv.provCountry.countryRegion',
-      ],
+      relations: { addrProv: { provCountry: { countryRegion: true } } },
     });
   }
 }

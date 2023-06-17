@@ -2,7 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Hotels } from 'output/entities/Hotels';
 import { Repository } from 'typeorm';
-import { createHotelsDto, updateHotelsDto } from './hotels.dto';
+import { CreateHotelsDto, UpdateHotelsDto } from './hotels.dto';
+import {
+  IPaginationOptions,
+  Pagination,
+  paginate,
+} from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class HotelsService {
@@ -10,9 +15,24 @@ export class HotelsService {
     @InjectRepository(Hotels) private hotelsRepo: Repository<Hotels>,
   ) {}
 
+  public async findAllData(
+    options: IPaginationOptions,
+    name: string,
+  ): Promise<Pagination<Hotels>> {
+    const queryBuilder = this.hotelsRepo
+      .createQueryBuilder('c')
+      .orderBy('c.hotelId', 'ASC')
+      .innerJoinAndSelect('c.hotelAddr', 'hotelAddr')
+      .where('c.hotelName ilike :hotelname', {
+        hotelname: `%${name}%`,
+      });
+    return paginate<Hotels>(queryBuilder, options);
+  }
+
   public async findAll() {
     return await this.hotelsRepo.find({
-      relations: ['hotelAddr'],
+      relations: { hotelAddr: true },
+      order: { hotelId: 'ASC' },
     });
   }
 
@@ -21,25 +41,46 @@ export class HotelsService {
       where: {
         hotelId: id,
       },
-      relations: ['hotelAddr'],
+      relations: {
+        hotelAddr: true,
+      },
     });
   }
 
-  public async Create(createHotelsDto: createHotelsDto) {
+  public async Create(createHotelsDto: CreateHotelsDto) {
     try {
-      return await this.hotelsRepo.save(createHotelsDto);
+      await this.hotelsRepo.save({
+        ...createHotelsDto,
+        hotelModifiedDate: new Date(),
+      });
+      return 'Hotel Created successfully';
     } catch (error) {
       return error.message;
     }
   }
 
-  public async Update(id: number, updateHotelsDto: updateHotelsDto) {
+  public async Update(id: number, updateHotelsDto: UpdateHotelsDto) {
     try {
-      return await this.hotelsRepo.update(id, updateHotelsDto);
+      await this.hotelsRepo.update(id, {
+        ...updateHotelsDto,
+        hotelModifiedDate: new Date(),
+      });
+      return 'Hotel Update successfully';
     } catch (error) {
       return error.message;
     }
   }
+
+  // public async Update(id: number, updateHotelsDto: UpdateHotelsDto) {
+  //   try {
+  //     return await this.hotelsRepo.update(id, {
+  //       hotelId: updateHotelsDto.id,
+  //       hotelModifiedDate: new Date(),
+  //     });
+  //   } catch (error) {
+  //     return error.message;
+  //   }
+  // }
 
   public async Delete(id: number) {
     try {

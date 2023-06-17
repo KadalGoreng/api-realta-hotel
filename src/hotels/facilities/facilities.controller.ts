@@ -13,6 +13,7 @@ import {
 import { FacilitiesService } from './facilities.service';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { Facilities } from 'output/entities/Facilities';
+import { CreateFacilitiesDto, UpdateFacilitiesDto } from './facilities.dto';
 
 @Controller('/facilities')
 export class FacilitiesController {
@@ -50,14 +51,14 @@ export class FacilitiesController {
   }
 
   @Post()
-  public async Create(@Body() createFacilitiesDto: any) {
+  public async Create(@Body() createFacilitiesDto: CreateFacilitiesDto) {
     return await this.ServicesFacilities.Create(createFacilitiesDto);
   }
 
   @Put('/:id')
   public async Update(
     @Param('id') id: number,
-    @Body() updateFacilitiesDto: any,
+    @Body() updateFacilitiesDto: UpdateFacilitiesDto,
   ) {
     return await this.ServicesFacilities.Update(id, updateFacilitiesDto);
   }

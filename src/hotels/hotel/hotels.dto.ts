@@ -1,18 +1,18 @@
 import { Address } from 'output/entities/Address';
 
-export class createHotelsDto {
-  hotelName: string;
-  hotelDescription: string;
-  hotelRatingStar: number;
-  hotelModifiedDate: Date = new Date();
-  hotelAddr: Address;
-}
-
-export class updateHotelsDto {
+export class CreateHotelsDto {
   hotelName: string;
   hotelDescription: string;
   hotelRatingStar: number;
   hotelPhonenumber: string;
-  hotelModifiedDate: Date = new Date();
+  hotelAddr: Address;
+}
+
+export class UpdateHotelsDto {
+  id: number;
+  hotelName: string;
+  hotelDescription: string;
+  hotelRatingStar: number;
+  hotelPhonenumber: string;
   hotelAddr: Address;
 }

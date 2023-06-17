@@ -3,8 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { FacilityPriceHistory } from 'output/entities/FacilityPriceHistory';
 import { Repository } from 'typeorm';
 import {
-  createFacilityPriceHistoryDto,
-  updateFacilityPriceHistoryDto,
+  CreateFacilityPriceHistoryDto,
+  UpdateFacilityPriceHistoryDto,
 } from './facility-price-history.dto';
 
 @Injectable()
@@ -16,7 +16,10 @@ export class FacilityPriceHistoryService {
 
   public async findAll() {
     return await this.facilityPriceHistoryRepo.find({
-      relations: ['faphFaci', 'faphUser'],
+      relations: {
+        faphFaci: true,
+        faphUser: true,
+      },
     });
   }
 
@@ -25,17 +28,21 @@ export class FacilityPriceHistoryService {
       where: {
         faphId: id,
       },
-      relations: ['faphFaci', 'faphUser'],
+      relations: {
+        faphFaci: true,
+        faphUser: true,
+      },
     });
   }
 
   public async Create(
-    createFacilityPriceHistoryDto: createFacilityPriceHistoryDto,
+    createFacilityPriceHistoryDto: CreateFacilityPriceHistoryDto,
   ) {
     try {
-      return await this.facilityPriceHistoryRepo.save(
-        createFacilityPriceHistoryDto,
-      );
+      return await this.facilityPriceHistoryRepo.save({
+        ...createFacilityPriceHistoryDto,
+        faphModifiedDate: new Date(),
+      });
     } catch (error) {
       return error.message;
     }
@@ -43,13 +50,13 @@ export class FacilityPriceHistoryService {
 
   public async Update(
     id: number,
-    updateFacilityPriceHistoryDto: updateFacilityPriceHistoryDto,
+    updateFacilityPriceHistoryDto: UpdateFacilityPriceHistoryDto,
   ) {
     try {
-      return await this.facilityPriceHistoryRepo.update(
-        id,
-        updateFacilityPriceHistoryDto,
-      );
+      return await this.facilityPriceHistoryRepo.update(id, {
+        ...updateFacilityPriceHistoryDto,
+        faphModifiedDate: new Date(),
+      });
     } catch (error) {
       return error.message;
     }

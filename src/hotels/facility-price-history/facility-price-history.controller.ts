@@ -8,6 +8,10 @@ import {
   Put,
 } from '@nestjs/common';
 import { FacilityPriceHistoryService } from './facility-price-history.service';
+import {
+  CreateFacilityPriceHistoryDto,
+  UpdateFacilityPriceHistoryDto,
+} from './facility-price-history.dto';
 
 @Controller('/facilityPriceHistory')
 export class FacilityPriceHistoryController {
@@ -26,7 +30,9 @@ export class FacilityPriceHistoryController {
   }
 
   @Post()
-  public async Create(@Body() createFacilityPriceHistoryDto: any) {
+  public async Create(
+    @Body() createFacilityPriceHistoryDto: CreateFacilityPriceHistoryDto,
+  ) {
     return await this.ServicesFacilityPriceHistory.Create(
       createFacilityPriceHistoryDto,
     );
@@ -35,7 +41,7 @@ export class FacilityPriceHistoryController {
   @Put('/:id')
   public async Update(
     @Param('id') id: number,
-    @Body() updateFacilityPriceHistoryDto: any,
+    @Body() updateFacilityPriceHistoryDto: UpdateFacilityPriceHistoryDto,
   ) {
     return await this.ServicesFacilityPriceHistory.Update(
       id,

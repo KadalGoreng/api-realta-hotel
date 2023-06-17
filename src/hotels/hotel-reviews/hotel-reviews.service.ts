@@ -3,8 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { HotelReviews } from 'output/entities/HotelReviews';
 import { Repository } from 'typeorm';
 import {
-  createHotelReviewsDto,
-  updateHotelReviewsDto,
+  CreateHotelReviewsDto,
+  UpdateHotelReviewsDto,
 } from './hotel-reviews.dto';
 
 @Injectable()
@@ -16,7 +16,10 @@ export class HotelReviewsService {
 
   public async findAll() {
     return await this.hotelReviewsRepo.find({
-      relations: ['horeHotel', 'horeUser'],
+      relations: {
+        horeHotel: true,
+        horeUser: true,
+      },
     });
   }
 
@@ -25,13 +28,19 @@ export class HotelReviewsService {
       where: {
         horeId: id,
       },
-      relations: ['horeHotel', 'horeUser'],
+      relations: {
+        horeHotel: true,
+        horeUser: true,
+      },
     });
   }
 
-  public async Create(createHotelReviewsDto: createHotelReviewsDto) {
+  public async Create(createHotelReviewsDto: CreateHotelReviewsDto) {
     try {
-      return await this.hotelReviewsRepo.save(createHotelReviewsDto);
+      return await this.hotelReviewsRepo.save({
+        ...createHotelReviewsDto,
+        horeCreatedOn: new Date(),
+      });
     } catch (error) {
       return error.message;
     }
@@ -39,10 +48,13 @@ export class HotelReviewsService {
 
   public async Update(
     id: number,
-    updateHotelReviewsDto: updateHotelReviewsDto,
+    updateHotelReviewsDto: UpdateHotelReviewsDto,
   ) {
     try {
-      return await this.hotelReviewsRepo.update(id, updateHotelReviewsDto);
+      return await this.hotelReviewsRepo.update(id, {
+        ...updateHotelReviewsDto,
+        horeCreatedOn: new Date(),
+      });
     } catch (error) {
       return error.message;
     }

@@ -8,6 +8,10 @@ import {
   Put,
 } from '@nestjs/common';
 import { HotelReviewsService } from './hotel-reviews.service';
+import {
+  CreateHotelReviewsDto,
+  UpdateHotelReviewsDto,
+} from './hotel-reviews.dto';
 
 @Controller('/hotelReviews')
 export class HotelReviewController {
@@ -24,14 +28,14 @@ export class HotelReviewController {
   }
 
   @Post()
-  public async Create(@Body() createHotelReviewsDto: any) {
+  public async Create(@Body() createHotelReviewsDto: CreateHotelReviewsDto) {
     return await this.ServicesHotelReviews.Create(createHotelReviewsDto);
   }
 
   @Put('/:id')
   public async Update(
     @Param('id') id: number,
-    @Body() updateHotelReviewsDto: any,
+    @Body() updateHotelReviewsDto: UpdateHotelReviewsDto,
   ) {
     return await this.ServicesHotelReviews.Update(id, updateHotelReviewsDto);
   }

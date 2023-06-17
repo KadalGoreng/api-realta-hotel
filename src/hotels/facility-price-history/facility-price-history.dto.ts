@@ -1,6 +1,6 @@
 import { Facilities } from 'output/entities/Facilities';
 
-export class createFacilityPriceHistoryDto {
+export class CreateFacilityPriceHistoryDto {
   faphStartdate: Date = new Date();
   faphEnddate: Date = new Date();
   faphLowPrice: string;
@@ -8,17 +8,16 @@ export class createFacilityPriceHistoryDto {
   faphRatePrice: string;
   faphDiscount: string;
   faphTaxRate: string;
-  faphModifiedDate: Date = new Date();
   faphUserId: number;
   faphFaci: Facilities;
 }
 
-export class updateFacilityPriceHistoryDto {
+export class UpdateFacilityPriceHistoryDto {
+  id: number;
   faphLowPrice: string;
   faphHighPrice: string;
   faphRatePrice: string;
   faphDiscount: string;
   faphTaxRate: string;
-  faphModifiedDate: Date = new Date();
   faphFaci: Facilities;
 }
