@@ -6,10 +6,16 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { StockDetailService } from './stock-detail.service';
 import { Facilities } from 'output/entities/Facilities';
 import { PurchaseOrderHeader } from 'output/entities/PurchaseOrderHeader';
+import {
+  CreateStockDetailDto,
+  PaginationOptions,
+  UpdateStockDetailDto,
+} from './stock-detail-dto';
 
 @Controller('stockdetail')
 export class StockDetailController {
@@ -25,44 +31,35 @@ export class StockDetailController {
     return await this.Services.findOne(id);
   }
 
-  @Get('/stock/:id')
-  public async getOneByStockId(@Param('id') id: number) {
-    return await this.Services.findOneByStockId(id);
+  @Get('stock/:id')
+  public async getOneByStockId(
+    @Param('id') id: string,
+    @Query() query: PaginationOptions,
+  ) {
+    const { page, limit } = query;
+
+    const options: PaginationOptions = {
+      page: page ? page : 1,
+      limit: limit ? limit : 10,
+    };
+    return await this.Services.findOneByStockId(id, options);
   }
 
   @Post()
-  public async Create(
-    @Body('stodStockId') stodStockId: number,
-    @Body('stodStatus') stodStatus: string,
-    @Body('stodNotes') stodNotes: string,
-    @Body('stodFaci') stodFaci: Facilities,
-    @Body('stodPohe') stodPohe: PurchaseOrderHeader,
-  ) {
-    return await this.Services.Create(
-      stodStockId,
-      stodStatus,
-      stodNotes,
-      stodFaci,
-      stodPohe,
-    );
+  public async Create(@Body() createStockDetailDto: CreateStockDetailDto) {
+    return await this.Services.Create(createStockDetailDto);
   }
 
   @Put(':stodStockId/:stodId')
   public async Update(
     @Param('stodStockId') stodStockId: number,
     @Param('stodId') stodId: number,
-    @Body('stodStatus') stodStatus: string,
-    @Body('stodNotes') stodNotes: string,
-    @Body('stodFaci') stodFaci: Facilities,
-    @Body('stodPohe') stodPohe: PurchaseOrderHeader,
+    @Body() updateStockDetailDto: UpdateStockDetailDto,
   ) {
     return await this.Services.Update(
       stodStockId,
       stodId,
-      stodStatus,
-      stodNotes,
-      stodFaci,
-      stodPohe,
+      updateStockDetailDto,
     );
   }
 

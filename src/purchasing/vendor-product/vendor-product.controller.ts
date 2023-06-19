@@ -6,18 +6,23 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { VendorProductService } from './vendor-product.service';
-import { Stocks } from 'output/entities/Stocks';
-import { Vendor } from 'output/entities/Vendor';
+import {
+  CreateVendorProductDto,
+  PaginationOptions,
+  UpdateVendorProductDto,
+  filterVendorProductDto,
+} from './vendor-product.dto';
 
 @Controller('vendorproduct')
 export class VendorProductController {
   constructor(private Services: VendorProductService) {}
 
   @Get()
-  public async getAll() {
-    return await this.Services.get();
+  public async getAll(@Query() filterVendorProductDto: filterVendorProductDto) {
+    return await this.Services.get(filterVendorProductDto);
   }
 
   @Get(':id')
@@ -25,40 +30,31 @@ export class VendorProductController {
     return await this.Services.findOne(id);
   }
 
-  @Post()
-  public async Create(
-    @Body('veproQtyStocked') veproQtyStocked: number,
-    @Body('veproQtyRemaining') veproQtyRemaining: number,
-    @Body('veproPrice') veproPrice: string,
-    @Body('veproStock') veproStock: Stocks,
-    @Body('veproVendor') veproVendor: Vendor,
+  @Get('vendor/:id')
+  public async getOneByStockId(
+    @Param('id') id: string,
+    @Query() query: PaginationOptions,
   ) {
-    return await this.Services.Create(
-      veproQtyStocked,
-      veproQtyRemaining,
-      veproPrice,
-      veproStock,
-      veproVendor,
-    );
+    const { page, limit } = query;
+
+    const options: PaginationOptions = {
+      page: page ? page : 1,
+      limit: limit ? limit : 10,
+    };
+    return await this.Services.findOneByVendorId(id, options);
+  }
+
+  @Post()
+  public async Create(@Body() createVendorProductDto: CreateVendorProductDto) {
+    return await this.Services.Create(createVendorProductDto);
   }
 
   @Put(':veproId')
   public async Update(
     @Param('veproId') veproId: number,
-    @Body('veproQtyStocked') veproQtyStocked: number,
-    @Body('veproQtyRemaining') veproQtyRemaining: number,
-    @Body('veproPrice') veproPrice: string,
-    @Body('veproStock') veproStock: Stocks,
-    @Body('veproVendor') veproVendor: Vendor,
+    @Body() updateVendorProductDto: UpdateVendorProductDto,
   ) {
-    return await this.Services.Update(
-      veproId,
-      veproQtyStocked,
-      veproQtyRemaining,
-      veproPrice,
-      veproStock,
-      veproVendor,
-    );
+    return await this.Services.Update(veproId, updateVendorProductDto);
   }
 
   @Delete(':id')

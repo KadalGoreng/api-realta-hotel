@@ -6,17 +6,30 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 // import { StocksService } from './stocks.service';
 import { VendorService } from './vendor.service';
+import {
+  CreateVendorDto,
+  PaginationOptions,
+  UpdateVendorDto,
+} from './vendor.dto';
 
 @Controller('vendor')
 export class VendorController {
   constructor(private Services: VendorService) {}
 
   @Get()
-  public async getAll() {
-    return await this.Services.get();
+  public async getAll(@Query() query: PaginationOptions) {
+    const { vendorName, status, page, limit } = query;
+
+    const options: PaginationOptions = {
+      page: page ? page : 1,
+      limit: limit ? limit : 10,
+    };
+
+    return await this.Services.get(vendorName, status, options);
   }
 
   @Get(':id')
@@ -25,39 +38,16 @@ export class VendorController {
   }
 
   @Post()
-  public async Create(
-    @Body('vendorName') vendorName: string,
-    @Body('vendorActive') vendorActive: number,
-    @Body('vendorPriority') vendorPriority: number,
-    @Body('vendorRegisterDate') vendorRegisterDate: Date = new Date(),
-    @Body('vendorWeburl') vendorWeburl: string,
-  ) {
-    return await this.Services.Create(
-      vendorName,
-      vendorActive,
-      vendorPriority,
-      vendorRegisterDate,
-      vendorWeburl,
-    );
+  public async Create(@Body() createVendorDto: CreateVendorDto) {
+    return await this.Services.Create(createVendorDto);
   }
 
   @Put(':id')
   public async Update(
     @Param('id') id: number,
-    @Body('vendorName') vendorName: string,
-    @Body('vendorActive') vendorActive: number,
-    @Body('vendorPriority') vendorPriority: number,
-    @Body('vendorRegisterDate') vendorRegisterDate: string,
-    @Body('vendorWeburl') vendorWeburl: string,
+    @Body() updateVendorDto: UpdateVendorDto,
   ) {
-    return await this.Services.Update(
-      id,
-      vendorName,
-      vendorActive,
-      vendorPriority,
-      vendorRegisterDate,
-      vendorWeburl,
-    );
+    return await this.Services.Update(id, updateVendorDto);
   }
 
   @Delete(':id')

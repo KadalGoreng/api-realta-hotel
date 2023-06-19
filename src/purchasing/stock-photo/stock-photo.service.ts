@@ -13,6 +13,9 @@ export class StockPhotoService {
 
   public async get() {
     return await this.serviceRepo.find({
+      order: {
+        sphoId: 'DESC',
+      },
       relations: {
         sphoStock: {
           vendorProducts: { veproVendor: true },
@@ -23,6 +26,9 @@ export class StockPhotoService {
 
   public async findOne(id: number) {
     return await this.serviceRepo.find({
+      order: {
+        sphoId: 'DESC',
+      },
       where: {
         sphoStock: {
           stockId: id,

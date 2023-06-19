@@ -2,7 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { PurchaseOrderDetail } from 'output/entities/PurchaseOrderDetail';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Stocks } from 'output/entities/Stocks';
+import {
+  CreatePurchaseOrderDetailDto,
+  UpdatePurchaseOrderDetailDto,
+} from './purchase-order-detail.dto';
 
 @Injectable()
 export class PurchaseOrderDetailService {
@@ -40,29 +43,10 @@ export class PurchaseOrderDetailService {
   }
 
   public async Create(
-    podePoheId: number,
-    podeOrderQty: number,
-    podePrice: string,
-    podeLineTotal: string,
-    podeReceivedQty: string,
-    podeRejectedQty: string,
-    podeStockedQty: string,
-    podeStock: Stocks,
-    podeModifiedDate: Date = new Date(),
+    createPurchaseOrderDetailDto: CreatePurchaseOrderDetailDto,
   ) {
     try {
-      const purchaseOrderDetail = await this.serviceRepo.save({
-        podePoheId: podePoheId,
-        podeOrderQty: podeOrderQty,
-        podePrice: podePrice,
-        podeLineTotal: podeLineTotal,
-        podeReceivedQty: podeReceivedQty,
-        podeRejectedQty: podeRejectedQty,
-        podeStockedQty: podeStockedQty,
-        podeStock: podeStock,
-        podeModifiedDate: podeModifiedDate,
-      });
-      return purchaseOrderDetail;
+      return await this.serviceRepo.save({ ...createPurchaseOrderDetailDto });
     } catch (error) {
       return error.message;
     }
@@ -71,27 +55,13 @@ export class PurchaseOrderDetailService {
   public async Update(
     podePoheId: number,
     podeId: number,
-    podeOrderQty: number,
-    podePrice: string,
-    podeLineTotal: string,
-    podeReceivedQty: string,
-    podeRejectedQty: string,
-    podeStockedQty: string,
-    podeStock: Stocks,
-    podeModifiedDate: Date = new Date(),
+    updatePurchaseOrderDetailDto: UpdatePurchaseOrderDetailDto,
   ) {
     try {
       const purchaseOrderDetail = await this.serviceRepo.update(
         { podePoheId, podeId },
         {
-          podeOrderQty: podeOrderQty,
-          podePrice: podePrice,
-          podeLineTotal: podeLineTotal,
-          podeReceivedQty: podeReceivedQty,
-          podeRejectedQty: podeRejectedQty,
-          podeStockedQty: podeStockedQty,
-          podeStock: podeStock,
-          podeModifiedDate: podeModifiedDate,
+          ...updatePurchaseOrderDetailDto,
         },
       );
       return purchaseOrderDetail;

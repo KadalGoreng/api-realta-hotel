@@ -15,6 +15,7 @@ import { ModuleModule } from './module/module.module';
 // import { PurchaseOrderHeaderController } from './purchase-order-header/purchase-order-header.controller';
 // import { PurchaseOrderDetailController } from './purchase-order-detail/purchase-order-detail.controller';
 // import { PurchaseOrderDetailService } from './purchase-order-detail/purchase-order-detail.service';
+
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -30,7 +31,5 @@ import { ModuleModule } from './module/module.module';
     }),
     ModuleModule,
   ],
-  controllers: [],
-  providers: [],
 })
 export class AppModule {}

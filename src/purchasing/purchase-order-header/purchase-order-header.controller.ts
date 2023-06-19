@@ -6,19 +6,36 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 // import { StocksService } from './stocks.service';
 import { PurchaseOrderHeaderService } from './purchase-order-header.service';
-import { Employee } from 'output/entities/Employee';
-import { Vendor } from 'output/entities/Vendor';
+
+import {
+  CreatePurchaseOrderHeaderDto,
+  PaginationOptions,
+  UpdatePurchaseOrderHeaderDto,
+} from './purchase-order-header.dto';
 
 @Controller('purchaseOrderHeader')
 export class PurchaseOrderHeaderController {
   constructor(private Services: PurchaseOrderHeaderService) {}
 
+  // @Get()
+  // public async getAll() {
+  //   return await this.Services.get();
+  // }
+
   @Get()
-  public async getAll() {
-    return await this.Services.get();
+  public async getAll(@Query() query: PaginationOptions) {
+    const { vendorName, status, page, limit } = query;
+
+    const options: PaginationOptions = {
+      page: page ? page : 1,
+      limit: limit ? limit : 10,
+    };
+
+    return await this.Services.get(vendorName, status, options);
   }
 
   @Get(':id')
@@ -28,58 +45,17 @@ export class PurchaseOrderHeaderController {
 
   @Post()
   public async Create(
-    @Body('poheStatus') poheStatus: number,
-    @Body('poheSubtotal') poheSubtotal: string,
-    @Body('poheTax') poheTax: string,
-    @Body('poheTotalAmount') poheTotalAmount: string,
-    @Body('poheRefund') poheRefund: string,
-    @Body('poheArrivalDate') poheArrivalDate: Date,
-    @Body('pohePayType') pohePayType: string,
-    @Body('poheEmp') poheEmp: Employee,
-    @Body('poheVendor') poheVendor: Vendor,
-    @Body('poheOrderDate') poheOrderDate: Date = new Date(),
+    @Body() createPurchaseOrderHeaderDto: CreatePurchaseOrderHeaderDto,
   ) {
-    return await this.Services.Create(
-      poheStatus,
-      poheSubtotal,
-      poheTax,
-      poheTotalAmount,
-      poheRefund,
-      poheArrivalDate,
-      pohePayType,
-      poheEmp,
-      poheVendor,
-      poheOrderDate,
-    );
+    return await this.Services.Create(createPurchaseOrderHeaderDto);
   }
 
   @Put(':id')
   public async Update(
     @Param('id') id: number,
-    @Body('poheStatus') poheStatus: number,
-    @Body('poheOrderDate') poheOrderDate: Date,
-    @Body('poheSubtotal') poheSubtotal: string,
-    @Body('poheTax') poheTax: string,
-    @Body('poheTotalAmount') poheTotalAmount: string,
-    @Body('poheRefund') poheRefund: string,
-    @Body('poheArrivalDate') poheArrivalDate: Date,
-    @Body('pohePayType') pohePayType: string,
-    @Body('poheEmp') poheEmp: Employee,
-    @Body('poheVendor') poheVendor: Vendor,
+    @Body() updatePurchaseOrderHeaderDto: UpdatePurchaseOrderHeaderDto,
   ) {
-    return await this.Services.Update(
-      id,
-      poheStatus,
-      poheOrderDate,
-      poheSubtotal,
-      poheTax,
-      poheTotalAmount,
-      poheRefund,
-      poheArrivalDate,
-      pohePayType,
-      poheEmp,
-      poheVendor,
-    );
+    return await this.Services.Update(id, updatePurchaseOrderHeaderDto);
   }
 
   @Delete(':id')

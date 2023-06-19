@@ -3,7 +3,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Facilities } from 'output/entities/Facilities';
 import { PurchaseOrderHeader } from 'output/entities/PurchaseOrderHeader';
 import { StockDetail } from 'output/entities/StockDetail';
-import { Repository } from 'typeorm';
+import { FindManyOptions, Repository } from 'typeorm';
+import {
+  CreateStockDetailDto,
+  PaginationOptions,
+  UpdateStockDetailDto,
+} from './stock-detail-dto';
 
 @Injectable()
 export class StockDetailService {
@@ -33,28 +38,40 @@ export class StockDetailService {
     });
   }
 
-  public async findOneByStockId(stodStockId: number) {
-    return await this.serviceRepo.find({
-      where: { stodStockId: stodStockId },
-    });
+  public async findOneByStockId(
+    id: string,
+    PaginationOptions?: PaginationOptions,
+  ) {
+    const { page, limit } = PaginationOptions;
+
+    const query: FindManyOptions<StockDetail> = {
+      relations: {
+        stodFaci: true,
+        stodPohe: true,
+        stodStock: true,
+      },
+      where: { stodStockId: Number(id) },
+      take: limit,
+      skip: (page - 1) * limit,
+    };
+
+    const [priceItems, total] = await this.serviceRepo.findAndCount(query);
+    const totalPages = Math.ceil(total / limit);
+
+    return {
+      data: priceItems,
+      total,
+      totalPages,
+      limit: limit,
+      currentPage: Number(page),
+      perPage: limit,
+    };
   }
 
-  public async Create(
-    stodStockId: number,
-
-    stodStatus: string,
-    stodNotes: string,
-    stodFaci: Facilities,
-    stodPohe: PurchaseOrderHeader,
-  ) {
+  public async Create(createStockDetailDto: CreateStockDetailDto) {
     try {
       const stockDetail = await this.serviceRepo.save({
-        stodStockId: stodStockId,
-
-        stodStatus: stodStatus,
-        stodNotes: stodNotes,
-        stodFaci: stodFaci,
-        stodPohe: stodPohe,
+        ...createStockDetailDto,
       });
       return stockDetail;
     } catch (error) {
@@ -65,20 +82,13 @@ export class StockDetailService {
   public async Update(
     stodStockId: number,
     stodId: number,
-
-    stodStatus: string,
-    stodNotes: string,
-    stodFaci: Facilities,
-    stodPohe: PurchaseOrderHeader,
+    updateStockDetailDto: UpdateStockDetailDto,
   ) {
     try {
       const stockDetail = await this.serviceRepo.update(
         { stodStockId, stodId },
         {
-          stodStatus: stodStatus,
-          stodNotes: stodNotes,
-          stodFaci: stodFaci,
-          stodPohe: stodPohe,
+          ...updateStockDetailDto,
         },
       );
       return stockDetail;

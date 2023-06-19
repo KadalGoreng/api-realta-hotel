@@ -71,6 +71,10 @@ import { VendorController } from 'src/purchasing/vendor/vendor.controller';
 import { VendorService } from 'src/purchasing/vendor/vendor.service';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { FacilitiesService } from 'src/hotel/facilities/facilities.service';
+import { FacilitiesController } from 'src/hotel/facilities/facilities.controller';
+import { EmployeeService } from 'src/hr/employee/employee.service';
+import { EmployeeController } from 'src/hr/employee/employee.controller';
 
 // import { PurchaseOrderDetailController } from 'src/purchase-order-detail/purchase-order-detail.controller';
 // import { PurchaseOrderDetailService } from 'src/purchase-order-detail/purchase-order-detail.service';
@@ -156,6 +160,8 @@ import { join } from 'path';
     PurchaseOrderHeaderController,
     PurchaseOrderDetailController,
     StockPhotoController,
+    FacilitiesController,
+    EmployeeController,
   ],
   providers: [
     StocksService,
@@ -165,6 +171,8 @@ import { join } from 'path';
     PurchaseOrderHeaderService,
     PurchaseOrderDetailService,
     StockPhotoService,
+    FacilitiesService,
+    EmployeeService,
   ],
 })
 export class ModuleModule {}

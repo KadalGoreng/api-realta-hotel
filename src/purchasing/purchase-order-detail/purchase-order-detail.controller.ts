@@ -8,7 +8,10 @@ import {
   Put,
 } from '@nestjs/common';
 import { PurchaseOrderDetailService } from './purchase-order-detail.service';
-import { Stocks } from 'output/entities/Stocks';
+import {
+  CreatePurchaseOrderDetailDto,
+  UpdatePurchaseOrderDetailDto,
+} from './purchase-order-detail.dto';
 
 @Controller('purchaseOrderDetail')
 export class PurchaseOrderDetailController {
@@ -31,53 +34,21 @@ export class PurchaseOrderDetailController {
 
   @Post()
   public async Create(
-    @Body('podePoheId') podePoheId: number,
-    @Body('podeOrderQty') podeOrderQty: number,
-    @Body('podePrice') podePrice: string,
-    @Body('podeLineTotal') podeLineTotal: string,
-    @Body('podeReceivedQty') podeReceivedQty: string,
-    @Body('podeRejectedQty') podeRejectedQty: string,
-    @Body('podeStockedQty') podeStockedQty: string,
-    // @Body('podeModifiedDate') podeModifiedDate: Date,
-    @Body('podeStock') podeStock: Stocks,
+    @Body() createPurchaseOrderDetailDto: CreatePurchaseOrderDetailDto,
   ) {
-    return await this.Services.Create(
-      podePoheId,
-      podeOrderQty,
-      podePrice,
-      podeLineTotal,
-      podeReceivedQty,
-      podeRejectedQty,
-      podeStockedQty,
-      // podeModifiedDate,
-      podeStock,
-    );
+    return await this.Services.Create(createPurchaseOrderDetailDto);
   }
 
   @Put(':podePoheId/:podeId')
   public async Update(
     @Param('podePoheId') podePoheId: number,
     @Param('podeId') podeId: number,
-    @Body('podeOrderQty') podeOrderQty: number,
-    @Body('podePrice') podePrice: string,
-    @Body('podeLineTotal') podeLineTotal: string,
-    @Body('podeReceivedQty') podeReceivedQty: string,
-    @Body('podeRejectedQty') podeRejectedQty: string,
-    @Body('podeStockedQty') podeStockedQty: string,
-    // @Body('podeModifiedDate') podeModifiedDate: Date,
-    @Body('podeStock') podeStock: Stocks,
+    @Body() updatePurchaseOrderDetailDto: UpdatePurchaseOrderDetailDto,
   ) {
     return await this.Services.Update(
       podePoheId,
       podeId,
-      podeOrderQty,
-      podePrice,
-      podeLineTotal,
-      podeReceivedQty,
-      podeRejectedQty,
-      podeStockedQty,
-      // podeModifiedDate,
-      podeStock,
+      updatePurchaseOrderDetailDto,
     );
   }
 

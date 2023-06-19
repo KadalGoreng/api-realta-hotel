@@ -2,7 +2,12 @@ import { Injectable } from '@nestjs/common';
 // import { Stocks } from 'output/entities/Stocks';
 import { Vendor } from 'output/entities/Vendor';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import {
+  CreateVendorDto,
+  PaginationOptions,
+  UpdateVendorDto,
+} from './vendor.dto';
+import { FindManyOptions, ILike, Repository } from 'typeorm';
 
 @Injectable()
 export class VendorService {
@@ -11,13 +16,46 @@ export class VendorService {
     private serviceRepo: Repository<Vendor>,
   ) {}
 
-  public async get() {
-    return await this.serviceRepo.find({
+  public async get(
+    vendorName?: string,
+    status?: number,
+    PaginationOptions?: PaginationOptions,
+  ) {
+    const { page, limit } = PaginationOptions;
+
+    const query: FindManyOptions<Vendor> = {
       order: {
         vendorId: 'DESC',
       },
       relations: { vendorProducts: { veproStock: true } },
-    });
+      take: limit,
+      skip: (page - 1) * limit,
+    };
+
+    if (vendorName) {
+      query.where = {
+        vendorName: ILike(`%${vendorName}%`),
+      };
+    }
+
+    if (status) {
+      query.where = {
+        ...query.where,
+        vendorActive: status,
+      };
+    }
+
+    const [priceItems, total] = await this.serviceRepo.findAndCount(query);
+    const totalPages = Math.ceil(total / limit);
+
+    return {
+      data: priceItems,
+      total,
+      totalPages,
+      limit: limit,
+      currentPage: Number(page),
+      perPage: limit,
+    };
   }
 
   public async findOne(vendorId: number) {
@@ -27,46 +65,20 @@ export class VendorService {
     });
   }
 
-  public async Create(
-    vendorName: string,
-    vendorActive: number,
-    vendorPriority: number,
-    vendorRegisterDate: Date = new Date(),
-    vendorWeburl: string,
-    vendorModifiedDate: Date = new Date(),
-  ) {
+  public async Create(createVendorDto: CreateVendorDto) {
     try {
-      const vendor = await this.serviceRepo.save({
-        vendorName: vendorName,
-        vendorActive: vendorActive,
-        vendorPriority: vendorPriority,
-        vendorRegisterDate: vendorRegisterDate,
-        vendorWeburl: vendorWeburl,
-        vendorModifiedDate: vendorModifiedDate,
+      return await this.serviceRepo.save({
+        ...createVendorDto,
       });
-      return vendor;
     } catch (error) {
       return error.message;
     }
   }
 
-  public async Update(
-    vendorId: number,
-    vendorName: string,
-    vendorActive: number,
-    vendorPriority: number,
-    vendorRegisterDate: string,
-    vendorWeburl: string,
-    vendorModifiedDate: Date = new Date(),
-  ) {
+  public async Update(vendorId: number, updateVendorDto: UpdateVendorDto) {
     try {
       const vendor = await this.serviceRepo.update(vendorId, {
-        vendorName: vendorName,
-        vendorActive: vendorActive,
-        vendorPriority: vendorPriority,
-        vendorRegisterDate: vendorRegisterDate,
-        vendorWeburl: vendorWeburl,
-        vendorModifiedDate: vendorModifiedDate,
+        ...updateVendorDto,
       });
       return vendor;
     } catch (error) {

@@ -1,9 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { VendorProduct } from 'output/entities/VendorProduct';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Stocks } from 'output/entities/Stocks';
-import { Vendor } from 'output/entities/Vendor';
+import { FindManyOptions, ILike, Repository } from 'typeorm';
+import {
+  CreateVendorProductDto,
+  PaginationOptions,
+  UpdateVendorProductDto,
+  filterVendorProductDto,
+} from './vendor-product.dto';
 
 @Injectable()
 export class VendorProductService {
@@ -12,10 +16,11 @@ export class VendorProductService {
     private serviceRepo: Repository<VendorProduct>,
   ) {}
 
-  public async get() {
-    return await this.serviceRepo.find({
+  public async get(filterVendorProductDto: filterVendorProductDto) {
+    const { name, price } = filterVendorProductDto;
+    const query: FindManyOptions<VendorProduct> = {
       order: {
-        veproId: 'DESC',
+        veproPrice: Number(price) === 1 ? 1 : -1,
       },
       relations: {
         veproStock: {
@@ -23,7 +28,13 @@ export class VendorProductService {
         },
         veproVendor: true,
       },
-    });
+    };
+    if (name) {
+      query.where = {
+        veproStock: { stockName: ILike(`%${name}%`) },
+      };
+    }
+    return await this.serviceRepo.find(query);
   }
 
   public async findOne(veproId: number) {
@@ -36,22 +47,38 @@ export class VendorProductService {
     });
   }
 
-  public async Create(
-    veproQtyStocked: number,
-    veproQtyRemaining: number,
-    veproPrice: string,
-    veproStock: Stocks,
-    veproVendor: Vendor,
+  public async findOneByVendorId(
+    id: string,
+    PaginationOptions?: PaginationOptions,
   ) {
+    const { page, limit } = PaginationOptions;
+
+    const query: FindManyOptions<VendorProduct> = {
+      relations: {
+        veproStock: true,
+        veproVendor: true,
+      },
+      where: { veproVendor: { vendorId: Number(id) } },
+      take: limit,
+      skip: (page - 1) * limit,
+    };
+
+    const [priceItems, total] = await this.serviceRepo.findAndCount(query);
+    const totalPages = Math.ceil(total / limit);
+
+    return {
+      data: priceItems,
+      total,
+      totalPages,
+      limit: limit,
+      currentPage: Number(page),
+      perPage: limit,
+    };
+  }
+
+  public async Create(createVendorProductDto: CreateVendorProductDto) {
     try {
-      const vendorProduct = await this.serviceRepo.save({
-        veproQtyStocked: veproQtyStocked,
-        veproQtyRemaining: veproQtyRemaining,
-        veproPrice: veproPrice,
-        veproStock: veproStock,
-        veproVendor: veproVendor,
-      });
-      return vendorProduct;
+      return await this.serviceRepo.save({ ...createVendorProductDto });
     } catch (error) {
       return error.message;
     }
@@ -59,19 +86,11 @@ export class VendorProductService {
 
   public async Update(
     veproId: number,
-    veproQtyStocked: number,
-    veproQtyRemaining: number,
-    veproPrice: string,
-    veproStock: Stocks,
-    veproVendor: Vendor,
+    updateVendorProductDto: UpdateVendorProductDto,
   ) {
     try {
       const vendorProduct = await this.serviceRepo.update(veproId, {
-        veproQtyStocked: veproQtyStocked,
-        veproQtyRemaining: veproQtyRemaining,
-        veproPrice: veproPrice,
-        veproStock: veproStock,
-        veproVendor: veproVendor,
+        ...updateVendorProductDto,
       });
       return vendorProduct;
     } catch (error) {
