@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, ILike } from 'typeorm';
 import { Bank } from 'output/entities/Bank';
 import { Entitys } from 'output/entities/Entitys';
 
@@ -51,6 +51,17 @@ export class BankService {
     try {
       const bank = await this.bankRepo.delete(id);
       return bank;
+    } catch (error) {
+      return error.message;
+    }
+  }
+
+  public async Search(keyword: string) {
+    try {
+      return await this.bankRepo.findBy({
+        bankName:
+          ILike(`%${keyword}%`) || ILike(`%${keyword}`) || ILike(`${keyword}%`),
+      });
     } catch (error) {
       return error.message;
     }

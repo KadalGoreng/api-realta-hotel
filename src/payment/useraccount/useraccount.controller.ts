@@ -17,8 +17,12 @@ export class UserAccountController {
   public async getAll() {
     return await this.useraccService.findAll();
   }
+  @Get('user/:id')
+  public async getOneUser(@Param('id') id: number) {
+    return await this.useraccService.findByUser(id);
+  }
   @Get(':id')
-  public async getOne(@Param('id') id: number) {
+  public async getOne(@Param('id') id: string) {
     return await this.useraccService.findOne(id);
   }
   @Post()
@@ -70,5 +74,12 @@ export class UserAccountController {
   @Delete(':id')
   public async Delete(@Param('id') id: number) {
     return await this.useraccService.Delete(id);
+  }
+  @Get('search/:keyword/:user')
+  public async search(
+    @Param('keyword') keyword: string,
+    @Param('user') user: number,
+  ) {
+    return await this.useraccService.Search(keyword, user);
   }
 }

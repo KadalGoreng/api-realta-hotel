@@ -1,6 +1,3 @@
-import { BookingOrderDetail } from 'output/entities/BookingOrderDetail';
-import { Hotels } from 'output/entities/Hotels';
-
 export class createOrderDto {
   boorOrderDate: Date;
   boorArrivalDate: Date;
@@ -16,7 +13,6 @@ export class createOrderDto {
   boorCardnumber: string;
   boorMemberType: string;
   boorStatus: string;
-  bookingOrderDetail: BookingOrderDetail;
   boorHotel: {
     hotelId: number;
   };

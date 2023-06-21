@@ -13,8 +13,8 @@ export class BookingOrderService {
 
   public async findAll() {
     return await this.bookingOrderService.find({
-      relations: { bookingOrderDetail: true, boorUser: true, boorHotel: true },
-      order: { boorId: 1 },
+      relations: { boorUser: true, boorHotel: true },
+      order: { boorId: -1 },
     });
   }
 

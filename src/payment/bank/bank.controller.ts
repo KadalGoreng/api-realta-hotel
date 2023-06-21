@@ -40,4 +40,8 @@ export class BankController {
   public async Delete(@Param('id') id: number) {
     return await this.bankService.Delete(id);
   }
+  @Get('search/:keyword')
+  public async search(@Param('keyword') keyword: string) {
+    return await this.bankService.Search(keyword);
+  }
 }

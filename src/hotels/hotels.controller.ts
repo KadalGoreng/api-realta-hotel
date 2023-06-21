@@ -51,7 +51,7 @@ export class HotelsController {
     @Body('hotelRatingStar') hotelRatingStar: number,
     @Body('hotelPhonenumber') hotelPhonenumber: string,
     @Body('hotelModifiedDate') hotelModifiedDate: Date = new Date(),
-    @Body('hotelAdddr') hotelAdddr: Address,
+    @Body('hotelAddr') hotelAddr: Address,
   ) {
     return await this.ServicesHotels.Update(
       id,
@@ -60,7 +60,7 @@ export class HotelsController {
       hotelRatingStar,
       hotelPhonenumber,
       hotelModifiedDate,
-      hotelAdddr,
+      hotelAddr,
     );
   }
 

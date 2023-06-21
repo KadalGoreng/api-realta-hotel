@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Post, Delete } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Delete,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 import { BookingOrderService } from './order.service';
 import { createOrderDto } from './order.dto';
 
@@ -18,6 +27,9 @@ export class BookingOrderController {
 
   @Post()
   public async createBookingOrder(@Body() createOrderDto: createOrderDto) {
+    if (!createOrderDto.boorTotalRoom) {
+      throw new HttpException('Name is required', HttpStatus.BAD_REQUEST);
+    }
     return await this.service.create(createOrderDto);
   }
 
