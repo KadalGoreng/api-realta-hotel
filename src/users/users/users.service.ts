@@ -18,6 +18,7 @@ export class UsersService {
         userPassword: true,
         userProfiles: true,
         userRoles: true,
+        userAccounts: true,
       },
     });
   }
@@ -25,6 +26,7 @@ export class UsersService {
   public async findOne(id: number) {
     return await this.serviceRepo.findOne({
       where: { userId: id },
+      relations: { userAccounts: true },
     });
   }
 

@@ -8,7 +8,6 @@
   "scripts": {
     "db": "typeorm-model-generator -h localhost -s booking,hotel,hr,master,payment,purchasing,resto,users -d realta-hotel -p 5432 -u postgres -x root -e postgres",
     "build": "nest build",
-    "db": "typeorm-model-generator -h localhost -d realta-hotel -s booking,hotel,hr,master,payment,public,purchasing,resto,users -p 5432 -u postgres -x admin -e postgres",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",

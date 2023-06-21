@@ -30,8 +30,10 @@ export class FacilitiesService {
       },
       relations: {
         faciCagro: true,
-        faciHotel: true,
+        faciHotel: { hotelAddr: true },
+        facilityPhotos: true,
       },
+      order: { faciId: 1 },
     });
   }
 
