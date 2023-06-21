@@ -6,16 +6,18 @@ import { ModuleModule } from './module/module.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: '',
+      host: 'localhost',
       port: 5432,
-      username: '',
+      username: 'postgres',
       password: '',
-      database: '',
-      autoLoadEntities: true,
-      // entities: ['../output/entities/*.ts'],
+      database: 'realta-hotel',
+      entities: ['../output/entities/*.ts'],
       synchronize: false,
+      autoLoadEntities: true,
     }),
     ModuleModule,
   ],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
