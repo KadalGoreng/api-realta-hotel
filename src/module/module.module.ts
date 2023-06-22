@@ -13,7 +13,6 @@ import { UserMembersService } from 'src/users/user-members/user-members.service'
 import { UserMembersController } from 'src/users/user-members/user-members.controller';
 import { UserProfilesService } from 'src/users/user-profiles/user-profiles.service';
 import { UserProfilesController } from 'src/users/user-profiles/user-profiles.controller';
-import { UserController } from 'src/users/user/user.controller';
 import { UserService } from 'src/users/user/user.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BankController } from 'src/payment/bank/bank.controller';
@@ -118,6 +117,22 @@ import { UserBonusPoints } from 'output/entities/UserBonusPoints';
 import { UserMembers } from 'output/entities/UserMembers';
 import { UserPassword } from 'output/entities/UserPassword';
 import { UserProfiles } from 'output/entities/UserProfiles';
+import { StocksController } from 'src/purchasing/stocks/stocks.controller';
+import { VendorProductController } from 'src/purchasing/vendor-product/vendor-product.controller';
+import { EmployeeController } from 'src/hr/employee/employee.controller';
+import { StockPhotoController } from 'src/purchasing/stock-photo/stock-photo.controller';
+import { PurchaseOrderDetailController } from 'src/purchasing/purchase-order-detail/purchase-order-detail.controller';
+import { PurchaseOrderHeaderController } from 'src/purchasing/purchase-order-header/purchase-order-header.controller';
+import { VendorController } from 'src/purchasing/vendor/vendor.controller';
+import { StockDetailController } from 'src/purchasing/stock-detail/stock-detail.controller';
+import { StocksService } from 'src/purchasing/stocks/stocks.service';
+import { VendorProductService } from 'src/purchasing/vendor-product/vendor-product.service';
+import { VendorService } from 'src/purchasing/vendor/vendor.service';
+import { StockDetailService } from 'src/purchasing/stock-detail/stock-detail.service';
+import { PurchaseOrderHeaderService } from 'src/purchasing/purchase-order-header/purchase-order-header.service';
+import { StockPhotoService } from 'src/purchasing/stock-photo/stock-photo.service';
+import { PurchaseOrderDetailService } from 'src/purchasing/purchase-order-detail/purchase-order-detail.service';
+import { EmployeeService } from 'src/hr/employee/employee.service';
 
 @Module({
   imports: [
@@ -276,6 +291,14 @@ import { UserProfiles } from 'output/entities/UserProfiles';
     PriceItemsController,
     OrderDetailExtraController,
     OrderDetailController,
+    StocksController,
+    VendorProductController,
+    StockDetailController,
+    VendorController,
+    PurchaseOrderHeaderController,
+    PurchaseOrderDetailController,
+    StockPhotoController,
+    EmployeeController,
   ],
   providers: [
     BankService,
@@ -297,16 +320,6 @@ import { UserProfiles } from 'output/entities/UserProfiles';
     UsersService,
     LocalGuard,
     JwtGuard,
-    BankService,
-    PaymentGatewayService,
-    PaymentTransactionService,
-    UserAccountService,
-    HotelsService,
-    FacilitiesService,
-    HotelReviewsService,
-    FacilityPriceHistoryService,
-    CategoryGroupService,
-    FacilityPhotoService,
     BookingOrderService,
     SpecialOfferService,
     RegionsService,
@@ -320,6 +333,14 @@ import { UserProfiles } from 'output/entities/UserProfiles';
     AddressService,
     CategoryGroupService,
     OrderDetailService,
+    StocksService,
+    VendorProductService,
+    StockDetailService,
+    VendorService,
+    PurchaseOrderHeaderService,
+    PurchaseOrderDetailService,
+    StockPhotoService,
+    EmployeeService,
   ],
   exports: [UserService],
 })
