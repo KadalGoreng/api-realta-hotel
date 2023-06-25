@@ -1,14 +1,33 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Address } from 'output/entities/Address';
 import { Hotels } from 'output/entities/Hotels';
 import { Repository } from 'typeorm';
+import { CreateHotelsDto, UpdateHotelsDto } from './hotels.dto';
+import {
+  IPaginationOptions,
+  Pagination,
+  paginate,
+} from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class HotelsService {
   constructor(
     @InjectRepository(Hotels) private hotelsRepo: Repository<Hotels>,
   ) {}
+
+  public async findAllData(
+    options: IPaginationOptions,
+    name: string,
+  ): Promise<Pagination<Hotels>> {
+    const queryBuilder = this.hotelsRepo
+      .createQueryBuilder('c')
+      .orderBy('c.hotelId', 'ASC')
+      .innerJoinAndSelect('c.hotelAddr', 'hotelAddr')
+      .where('c.hotelName ilike :hotelname', {
+        hotelname: `%${name}%`,
+      });
+    return paginate<Hotels>(queryBuilder, options);
+  }
 
   public async findAll() {
     return await this.hotelsRepo.find({
@@ -32,48 +51,25 @@ export class HotelsService {
     });
   }
 
-  public async Create(
-    hotelName: string,
-    hotelDescription: string,
-    hotelRatingStar: number,
-    hotelPhonenumber: string,
-    hotelModifiedDate: Date = new Date(),
-    hotelAddr: Address,
-  ) {
+  public async Create(createHotelsDto: CreateHotelsDto) {
     try {
-      const hotels = await this.hotelsRepo.save({
-        hotelName: hotelName,
-        hotelDescription: hotelDescription,
-        hotelRatingStar: hotelRatingStar,
-        hotelPhonenumber: hotelPhonenumber,
-        hotelModifiedDate: hotelModifiedDate,
-        hotelAddr: hotelAddr,
+      await this.hotelsRepo.save({
+        ...createHotelsDto,
+        hotelModifiedDate: new Date(),
       });
-      return hotels;
+      return 'Hotel Created successfully';
     } catch (error) {
       return error.message;
     }
   }
 
-  public async Update(
-    id: number,
-    hotelName: string,
-    hotelDescription: string,
-    hotelRatingStar: number,
-    hotelPhonenumber: string,
-    hotelModifiedDate: Date = new Date(),
-    hotelAddr: Address,
-  ) {
+  public async Update(id: number, updateHotelsDto: UpdateHotelsDto) {
     try {
-      const hotels = await this.hotelsRepo.update(id, {
-        hotelName: hotelName,
-        hotelDescription: hotelDescription,
-        hotelRatingStar: hotelRatingStar,
-        hotelPhonenumber: hotelPhonenumber,
-        hotelModifiedDate: hotelModifiedDate,
-        hotelAddr: hotelAddr,
+      await this.hotelsRepo.update(id, {
+        ...updateHotelsDto,
+        hotelModifiedDate: new Date(),
       });
-      return hotels;
+      return 'Hotel Update successfully';
     } catch (error) {
       return error.message;
     }

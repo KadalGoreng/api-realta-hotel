@@ -74,8 +74,8 @@ import { FacilityPriceHistoryController } from 'src/hotels/facility-price-histor
 import { FacilityPriceHistoryService } from 'src/hotels/facility-price-history/facility-price-history.service';
 import { HotelReviewController } from 'src/hotels/hotel-reviews/hotel-reviews.controller';
 import { HotelReviewsService } from 'src/hotels/hotel-reviews/hotel-reviews.service';
-import { HotelsController } from 'src/hotels/hotels.controller';
-import { HotelsService } from 'src/hotels/hotels.service';
+import { HotelsController } from 'src/hotels/hotel/hotels.controller';
+import { HotelsService } from 'src/hotels/hotel/hotels.service';
 import { MulterModule } from '@nestjs/platform-express';
 import { ConfigMulter } from 'src/multer/multer.middleware';
 import { BookingOrderController } from 'src/booking/order/order.controller';
@@ -260,7 +260,6 @@ import { EmployeeService } from 'src/hr/employee/employee.service';
       secret: 'secretKey',
       signOptions: { expiresIn: '2d' },
     }),
-    MulterModule.register(ConfigMulter.Uploadfiles()),
   ],
   controllers: [
     UserProfilesController,

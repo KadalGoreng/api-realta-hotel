@@ -15,6 +15,10 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { Facilities } from 'output/entities/Facilities';
 import { of } from 'rxjs';
 import { join } from 'path';
+// import {
+//   UpdateFacilityPhotoDto,
+//   UploadFacilityPhotoDto,
+// } from './facility-photo.dto';
 
 @Controller('/facilityPhoto')
 export class FacilityPhotoController {
@@ -49,21 +53,17 @@ export class FacilityPhotoController {
     return await this.ServicesFacilityPhoto.Upload(file, createFacilityPhoto);
   }
 
-  // @Put('/:faphoId')
-  // public async Update(
-  //   @Param('faphoId') faphoId: number,
+  // Use DTO
+
+  // @Post()
+  // @UseInterceptors(FileInterceptor('file'))
+  // public async create(
   //   @UploadedFile() file,
-  //   @Body()
-  //   createFacilityPhoto: {
-  //     faphoPrimary: boolean;
-  //     faphoUrl: string;
-  //     faphoFaci: Facilities;
-  //   },
+  //   @Body() uploadFacilityPhotoDto: UploadFacilityPhotoDto,
   // ) {
-  //   return await this.ServicesFacilityPhoto.Update(
-  //     faphoId,
+  //   return await this.ServicesFacilityPhoto.Upload(
   //     file,
-  //     createFacilityPhoto,
+  //     uploadFacilityPhotoDto,
   //   );
   // }
 
@@ -71,12 +71,22 @@ export class FacilityPhotoController {
   public async Update(
     @Param('id') id: number,
     @Body()
-    createFacilityPhoto: {
+    updateFacilityPhoto: {
       faphoPrimary: boolean;
     },
   ) {
-    return await this.ServicesFacilityPhoto.Update(id, createFacilityPhoto);
+    return await this.ServicesFacilityPhoto.Update(id, updateFacilityPhoto);
   }
+
+  // Use DTO
+
+  // @Put(':id')
+  // public async Update(
+  //   @Param('id') id: number,
+  //   @Body() updateFacilityPhotoDto: UpdateFacilityPhotoDto,
+  // ) {
+  //   return await this.ServicesFacilityPhoto.Update(id, updateFacilityPhotoDto);
+  // }
 
   @Delete('/:id')
   public async Delete(@Param('id') id: number) {

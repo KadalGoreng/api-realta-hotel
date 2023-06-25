@@ -2,6 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { HotelReviews } from 'output/entities/HotelReviews';
 import { Repository } from 'typeorm';
+import {
+  CreateHotelReviewsDto,
+  UpdateHotelReviewsDto,
+} from './hotel-reviews.dto';
 
 @Injectable()
 export class HotelReviewsService {
@@ -43,24 +47,12 @@ export class HotelReviewsService {
     });
   }
 
-  public async Create(
-    horeId,
-    horeUserReview: string,
-    horeRating: number,
-    horeCreatedOn: Date = new Date(),
-    horeUser,
-    horeHotel,
-  ) {
+  public async Create(createHotelReviewsDto: CreateHotelReviewsDto) {
     try {
-      const hotelReviews = await this.hotelReviewsRepo.save({
-        horeId: horeId,
-        horeUserReview: horeUserReview,
-        horeRating: horeRating,
-        horeCreatedOn: horeCreatedOn,
-        horeUser: horeUser,
-        horeHotel: horeHotel,
+      return await this.hotelReviewsRepo.save({
+        ...createHotelReviewsDto,
+        horeCreatedOn: new Date(),
       });
-      return hotelReviews;
     } catch (error) {
       return error.message;
     }
@@ -68,23 +60,19 @@ export class HotelReviewsService {
 
   public async Update(
     id: number,
-    horeUserReview: string,
-    horeRating: number,
-    horeCreatedOn: Date = new Date(),
+    updateHotelReviewsDto: UpdateHotelReviewsDto,
   ) {
     try {
-      const hotelReviews = await this.hotelReviewsRepo.update(id, {
-        horeUserReview: horeUserReview,
-        horeRating: horeRating,
-        horeCreatedOn: horeCreatedOn,
+      return await this.hotelReviewsRepo.update(id, {
+        ...updateHotelReviewsDto,
+        horeCreatedOn: new Date(),
       });
-      return hotelReviews;
     } catch (error) {
       return error.message;
     }
   }
 
-  public async Delete(id: string) {
+  public async Delete(id: number) {
     try {
       const hotelReviews = await this.hotelReviewsRepo.delete(id);
       return hotelReviews;

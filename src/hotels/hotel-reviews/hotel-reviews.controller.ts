@@ -9,6 +9,10 @@ import {
   Query,
 } from '@nestjs/common';
 import { HotelReviewsService } from './hotel-reviews.service';
+import {
+  CreateHotelReviewsDto,
+  UpdateHotelReviewsDto,
+} from './hotel-reviews.dto';
 
 @Controller('/hotelReviews')
 export class HotelReviewController {
@@ -25,41 +29,20 @@ export class HotelReviewController {
   }
 
   @Post()
-  public async Create(
-    @Body('horeId') horeId,
-    @Body('horeUserRiview') horeUserRiview: string,
-    @Body('horeRating') horeRating: number,
-    @Body('horeCreatedOn') horeCreatedOn: Date = new Date(),
-    @Body('horeUserId') horeUser,
-    @Body('horeHotelId') horeHotel,
-  ) {
-    return await this.ServicesHotelReviews.Create(
-      horeId,
-      horeUserRiview,
-      horeRating,
-      horeCreatedOn,
-      horeUser,
-      horeHotel,
-    );
+  public async Create(@Body() createHotelReviewsDto: CreateHotelReviewsDto) {
+    return await this.ServicesHotelReviews.Create(createHotelReviewsDto);
   }
 
   @Put('/:id')
   public async Update(
     @Param('id') id: number,
-    @Body('horeUserRiview') horeUserRiview: string,
-    @Body('horeRating') horeRating: number,
-    @Body('horeCreatedOn') horeCreatedOn: Date = new Date(),
+    @Body() updateHotelReviewsDto: UpdateHotelReviewsDto,
   ) {
-    return await this.ServicesHotelReviews.Update(
-      id,
-      horeUserRiview,
-      horeRating,
-      horeCreatedOn,
-    );
+    return await this.ServicesHotelReviews.Update(id, updateHotelReviewsDto);
   }
 
   @Delete('/:id')
-  public async Delete(@Param('id') id: string) {
+  public async Delete(@Param('id') id: number) {
     return await this.ServicesHotelReviews.Delete(id);
   }
 }

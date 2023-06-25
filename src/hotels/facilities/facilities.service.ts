@@ -1,9 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CategoryGroup } from 'output/entities/CategoryGroup';
 import { Facilities } from 'output/entities/Facilities';
-import { Hotels } from 'output/entities/Hotels';
 import { Repository } from 'typeorm';
+import { CreateFacilitiesDto, UpdateFacilitiesDto } from './facilities.dto';
+import {
+  IPaginationOptions,
+  paginate,
+  Pagination,
+} from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class FacilitiesService {
@@ -12,29 +16,38 @@ export class FacilitiesService {
     private facilitiesRepo: Repository<Facilities>,
   ) {}
 
-  public async findAll() {
-    return await this.facilitiesRepo.find({
-      relations: {
-        faciCagro: true,
-        faciHotel: true,
-        facilityPhotos: true,
-      },
-      order: { faciId: 1 },
-    });
+  public async findAll(
+    options: IPaginationOptions,
+    id: number,
+  ): Promise<Pagination<Facilities>> {
+    const queryBuilder = this.facilitiesRepo
+      .createQueryBuilder('c')
+      .orderBy('c.faciId', 'ASC')
+      .innerJoinAndSelect('c.faciHotel', 'faciHotel')
+      .innerJoinAndSelect('c.faciCagro', 'faciCagro')
+      .where('faciHotel.hotelId = :hotelid', {
+        hotelid: id,
+      });
+    return paginate<Facilities>(queryBuilder, options);
   }
 
+  // public async findAll() {
+  //   return await this.facilitiesRepo.find({
+  //     relations: { faciCagro: true, faciHotel: true, facilityPhotos: true },
+  //     order: { faciId: 'ASC' },
+  //   });
+  // }
+
   public async find(id: number) {
-    return await this.facilitiesRepo.find({
-      where: {
-        faciHotel: { hotelId: id },
-      },
-      relations: {
-        faciCagro: true,
-        faciHotel: { hotelAddr: true },
-        facilityPhotos: true,
-      },
-      order: { faciId: 1 },
-    });
+    return await this.facilitiesRepo
+      .createQueryBuilder('facilities')
+      .orderBy('facilities.faciId', 'ASC')
+      .leftJoinAndSelect('facilities.faciCagro', 'faciCagro')
+      .leftJoinAndSelect('facilities.faciHotel', 'faciHotel')
+      .leftJoinAndSelect('facilities.facilityPhotos', 'facilityPhotos')
+      .leftJoinAndSelect('faciHotel.hotelAddr', 'hotelAddr')
+      .where('faciHotel.hotelId = :id', { id })
+      .getMany();
   }
 
   public async findOne(FaciId: number) {
@@ -49,83 +62,30 @@ export class FacilitiesService {
     });
   }
 
-  public async Create(
-    faciName: string,
-    faciMaxNumber: number,
-    faciMeasureUnit: string,
-    faciRoomNumber: string,
-    faciStartdate: Date = new Date(),
-    faciEnddate: Date = new Date(),
-    faciLowPrice: string,
-    faciHighPrice: string,
-    faciDiscount: string,
-    faciTaxRate: string,
-    faciModifiedDate: Date = new Date(),
-    faciRatePrice: string,
-    faciCagro: CategoryGroup,
-    faciHotel: Hotels,
-  ) {
+  public async Create(createFacilitiesDto: CreateFacilitiesDto) {
     try {
-      const hotels = await this.facilitiesRepo.save({
-        faciName: faciName,
-        faciMaxNumber: faciMaxNumber,
-        faciMeasureUnit: faciMeasureUnit,
-        faciRoomNumber: faciRoomNumber,
-        faciStartdate: faciStartdate,
-        faciEnddate: faciEnddate,
-        faciLowPrice: faciLowPrice,
-        faciHighPrice: faciHighPrice,
-        faciRatePrice: faciRatePrice,
-        faciDiscount: faciDiscount,
-        faciTaxRate: faciTaxRate,
-        faciModifiedDate: faciModifiedDate,
-        faciCagro: faciCagro,
-        faciHotel: faciHotel,
+      await this.facilitiesRepo.save({
+        ...createFacilitiesDto,
+        faciModifiedDate: new Date(),
       });
-      return hotels;
+      return 'Facilities Created successfully';
     } catch (error) {
       return error.message;
     }
   }
 
-  public async Update(
-    id: number,
-    faciName: string,
-    faciMaxNumber: number,
-    faciMeasureUnit: string,
-    faciRoomNumber: string,
-    faciStartdate: Date = new Date(),
-    faciEnddate: Date = new Date(),
-    faciLowPrice: string,
-    faciHighPrice: string,
-    faciDiscount: string,
-    faciTaxRate: string,
-    faciModifiedDate: Date = new Date(),
-    faciCagro: CategoryGroup,
-    faciHotel: Hotels,
-  ) {
+  public async Update(id: number, updateFacilitiesDto: UpdateFacilitiesDto) {
     try {
-      const hotels = await this.facilitiesRepo.update(id, {
-        faciName: faciName,
-        faciMaxNumber: faciMaxNumber,
-        faciMeasureUnit: faciMeasureUnit,
-        faciRoomNumber: faciRoomNumber,
-        faciStartdate: faciStartdate,
-        faciEnddate: faciEnddate,
-        faciLowPrice: faciLowPrice,
-        faciHighPrice: faciHighPrice,
-        faciDiscount: faciDiscount,
-        faciTaxRate: faciTaxRate,
-        faciModifiedDate: faciModifiedDate,
-        faciCagro: faciCagro,
-        faciHotel: faciHotel,
+      return await this.facilitiesRepo.update(id, {
+        ...updateFacilitiesDto,
+        faciModifiedDate: new Date(),
       });
-      return hotels;
     } catch (error) {
       return error.message;
     }
   }
-  public async Delete(id: string) {
+
+  public async Delete(id: number) {
     try {
       const hotels = await this.facilitiesRepo.delete(id);
       return hotels;

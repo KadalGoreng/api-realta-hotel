@@ -1,23 +1,38 @@
 import {
   Body,
   Controller,
+  DefaultValuePipe,
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { FacilitiesService } from './facilities.service';
-import { CategoryGroup } from 'output/entities/CategoryGroup';
-import { Hotels } from 'output/entities/Hotels';
+import { Pagination } from 'nestjs-typeorm-paginate';
+import { Facilities } from 'output/entities/Facilities';
+import { CreateFacilitiesDto, UpdateFacilitiesDto } from './facilities.dto';
 
 @Controller('/facilities')
 export class FacilitiesController {
   constructor(private ServicesFacilities: FacilitiesService) {}
 
   @Get()
-  public async getAll() {
-    return await this.ServicesFacilities.findAll();
+  public async getAll(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page = 1,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
+    @Query('id') id: number,
+  ): Promise<Pagination<Facilities>> {
+    limit = limit > 100 ? 100 : limit;
+    return this.ServicesFacilities.findAll(
+      {
+        page,
+        limit,
+      },
+      id,
+    );
   }
 
   @Get('hotel/:id')
@@ -31,77 +46,20 @@ export class FacilitiesController {
   }
 
   @Post()
-  public async Create(
-    @Body('faciName') faciName: string,
-    @Body('faciMaxNumber') faciMaxNumber: number,
-    @Body('faciMeasureUnit') faciMeasureUnit: string,
-    @Body('faciRoomNumber') faciRoomNumber: string,
-    @Body('faciStartdate') faciStartdate: Date = new Date(),
-    @Body('faciEnddate') faciEnddate: Date = new Date(),
-    @Body('faciLowPrice') faciLowPrice: string,
-    @Body('faciHighPrice') faciHighPrice: string,
-    @Body('faciDiscount') faciDiscount: string,
-    @Body('faciTaxRate') faciTaxRate: string,
-    @Body('faciModifiedDate') faciModifiedDate: Date = new Date(),
-    @Body('faciRatePrice') faciRatePrice: string,
-    @Body('faciCagro') faciCagro: CategoryGroup,
-    @Body('faciHotel') faciHotel: Hotels,
-  ) {
-    return await this.ServicesFacilities.Create(
-      faciName,
-      faciMaxNumber,
-      faciMeasureUnit,
-      faciRoomNumber,
-      faciStartdate,
-      faciEnddate,
-      faciLowPrice,
-      faciHighPrice,
-      faciDiscount,
-      faciTaxRate,
-      faciModifiedDate,
-      faciRatePrice,
-      faciCagro,
-      faciHotel,
-    );
+  public async Create(@Body() createFacilitiesDto: CreateFacilitiesDto) {
+    return await this.ServicesFacilities.Create(createFacilitiesDto);
   }
 
   @Put('/:id')
   public async Update(
     @Param('id') id: number,
-    @Body('faciName') faciName: string,
-    @Body('faciMaxNumber') faciMaxNumber: number,
-    @Body('faciMeasureUnit') faciMeasureUnit: string,
-    @Body('faciRoomNumber') faciRoomNumber: string,
-    @Body('faciStartdate') faciStartdate: Date = new Date(),
-    @Body('faciEnddate') faciEnddate: Date = new Date(),
-    @Body('faciLowPrice') faciLowPrice: string,
-    @Body('faciHighPrice') faciHighPrice: string,
-    @Body('faciDiscount') faciDiscount: string,
-    @Body('faciTaxRate') faciTaxRate: string,
-    @Body('faciModifiedDate') faciModifiedDate: Date = new Date(),
-    @Body('faciCagroId') faciCagro: CategoryGroup,
-    @Body('faciHotelId') faciHotel: Hotels,
+    @Body() updateFacilitiesDto: UpdateFacilitiesDto,
   ) {
-    return await this.ServicesFacilities.Update(
-      id,
-      faciName,
-      faciMaxNumber,
-      faciMeasureUnit,
-      faciRoomNumber,
-      faciStartdate,
-      faciEnddate,
-      faciLowPrice,
-      faciHighPrice,
-      faciDiscount,
-      faciTaxRate,
-      faciModifiedDate,
-      faciCagro,
-      faciHotel,
-    );
+    return await this.ServicesFacilities.Update(id, updateFacilitiesDto);
   }
 
   @Delete('/:id')
-  public async Delete(@Param('id') id: string) {
+  public async Delete(@Param('id') id: number) {
     return await this.ServicesFacilities.Delete(id);
   }
 }

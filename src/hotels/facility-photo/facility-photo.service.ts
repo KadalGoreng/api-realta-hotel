@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Facilities } from 'output/entities/Facilities';
 import { FacilityPhoto } from 'output/entities/FacilityPhoto';
 import { Repository } from 'typeorm';
+// import { UploadFacilityPhotoDto, UpdateFacilityPhotoDto } from './facility-photo.dto';
 
 @Injectable()
 export class FacilityPhotoService {
@@ -56,6 +57,26 @@ export class FacilityPhotoService {
       return error.message;
     }
   }
+
+  // Use DTO
+
+  // public async Upload(
+  //   file: any,
+  //   uploadFacilityPhotoDto: UploadFacilityPhotoDto,
+  // ) {
+  //   try {
+  //     const facilityPhoto = await this.facilityPhotoRepo.save({
+  //       ...uploadFacilityPhotoDto,
+  //       faphoThumbnailFilename: file.filename,
+  //       faphoPhotoFilename: file.filename,
+  //       faphoModifiedDate: new Date(),
+  //     });
+  //     return facilityPhoto;
+  //   } catch (error) {
+  //     return error.message;
+  //   }
+  // }
+
   public async Update(
     id: number,
     facilityPhotoDetail: {
@@ -73,22 +94,18 @@ export class FacilityPhotoService {
     }
   }
 
+  // Use Dto
+
   // public async Update(
-  //   faphoId: number,
-  //   file: any,
-  //   facilityPhotoDetail: {
-  //     faphoPrimary: boolean;
-  //     faphoFaci: Facilities;
-  //   },
+  //   id: number,
+  //   updateFacilityPhotoDto: UpdateFacilityPhotoDto,
   // ) {
   //   try {
-  //     const facilityPhoto = await this.facilityPhotoRepo.update(faphoId, {
-  //       ...facilityPhotoDetail,
-  //       faphoThumbnailFilename: file.originalname,
-  //       faphoPhotoFilename: file.originalname,
+  //     const hotels = await this.facilityPhotoRepo.update(id, {
+  //       ...updateFacilityPhotoDto,
   //       faphoModifiedDate: new Date(),
   //     });
-  //     return facilityPhoto;
+  //     return hotels;
   //   } catch (error) {
   //     return error.message;
   //   }
